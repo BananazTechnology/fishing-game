@@ -1,0 +1,28 @@
+{
+  "name": "fishing-game",
+  "version": "1.0.0",
+  "description": "Fishing Game Discord Bot",
+  "main": "src/Bot.ts",
+  "scripts": {
+    "dev": "nodemon src/Bot.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BananazTechnology/fishing-game.git"
+  },
+  "author": "Bananaz Tech",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BananazTechnology/fishing-game/issues"
+  },
+  "homepage": "https://github.com/BananazTechnology/fishing-game#readme",
+  "dependencies": {
+    "discord.js": "^13.6.0",
+    "nodemon": "^2.0.15"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.21",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.2"
+  }
+}
