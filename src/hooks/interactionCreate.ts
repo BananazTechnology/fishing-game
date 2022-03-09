@@ -1,5 +1,5 @@
 import { BaseCommandInteraction, Client, Interaction } from "discord.js";
-import { Commands } from "../Commands";
+import { Commands } from "../commandList";
 
 export default (client: Client): void => {
     client.on("interactionCreate", async (interaction: Interaction) => {
@@ -18,5 +18,6 @@ const handleSlashCommand = async (client: Client, interaction: BaseCommandIntera
 
     await interaction.deferReply();
 
+    console.log(`${interaction.user.username} ran ${slashCommand.name}`)
     slashCommand.run(client, interaction);
 };
