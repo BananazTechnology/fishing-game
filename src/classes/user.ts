@@ -23,12 +23,14 @@ export class User {
       .get(reqURL)
       .then(res => {
         const data = res.data.data
-        const user: User = new User(data.id, data.discordID, data.discordName, data.walletAddress)
-        callback(null, user)
+        if (data) {
+          const user: User = new User(data.id, data.discordID, data.discordName, data.walletAddress)
+          callback(null, user)
+        }
       })
       .catch(err => {
         console.error(err)
-        callback(null, undefined)
+        callback(err, undefined)
       })
   }
 }

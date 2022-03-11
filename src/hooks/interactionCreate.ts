@@ -25,7 +25,14 @@ const handleSlashCommand = async (client: Client, interaction: BaseCommandIntera
   // get user details
   User.getUserByDiscordID(interaction.user.id, async (err: Error, user: User) => {
     // if user is not found
-    if (err || !user.id) {
+    if (err) {
+      const content = 'Storm rolled in! Fishing is closed. Please contact Weatherman Wock!'
+
+      await interaction.followUp({
+        ephemeral: true,
+        content
+      })
+    } else if (!user.id) {
       const content = 'Please Register for a Fishing License!'
 
       await interaction.followUp({
