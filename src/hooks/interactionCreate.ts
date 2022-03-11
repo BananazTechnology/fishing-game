@@ -1,4 +1,5 @@
 import { BaseCommandInteraction, Client, Interaction } from 'discord.js'
+import { User } from '../classes/user'
 import { Commands } from '../commandList'
 
 export default (client: Client): void => {
@@ -17,8 +18,23 @@ const handleSlashCommand = async (client: Client, interaction: BaseCommandIntera
     return
   }
 
+  // log command to console
+  console.log(`${interaction.user.username} (${interaction.user.id}) ran ${slashCommand.name}`)
   await interaction.deferReply()
 
-  console.log(`${interaction.user.username} ran ${slashCommand.name}`)
-  slashCommand.run(client, interaction)
+  // get user details
+  User.getUserByDiscordID(interaction.user.id, async (err: Error, user: User) => {
+    // if user is not found
+    if (err || !user.id) {
+      const content = 'Please Register for a Fishing License!'
+
+      await interaction.followUp({
+        ephemeral: true,
+        content
+      })
+    } else {
+      // user found run command
+      slashCommand.run(client, interaction)
+    }
+  })
 }

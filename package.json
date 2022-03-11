@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/BananazTechnology/fishing-game#readme",
   "dependencies": {
+    "axios": "^0.26.1",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
     "mysql2": "^2.3.3",
