@@ -22,6 +22,12 @@ const handleSlashCommand = async (client: Client, interaction: BaseCommandIntera
   console.log(`${interaction.user.username} (${interaction.user.id}) ran ${slashCommand.name}`)
   await interaction.deferReply()
 
+  // if the user is trying to create a profile, dont try to get user
+  if (interaction.commandName === 'profile') {
+    slashCommand.run(client, interaction)
+    return
+  }
+
   // get user details
   User.getUserByDiscordID(interaction.user.id, async (err: Error, user: User) => {
     // if user is not found
@@ -32,7 +38,7 @@ const handleSlashCommand = async (client: Client, interaction: BaseCommandIntera
         ephemeral: true,
         content
       })
-    } else if (!user.id) {
+    } else if (!user) {
       const content = 'Please Register for a Fishing License!'
 
       await interaction.followUp({
