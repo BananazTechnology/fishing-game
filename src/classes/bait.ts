@@ -27,13 +27,13 @@ export class Bait implements StoreItem {
       const queryString = `
         INSERT INTO items
         (object, type, catchRate, cost)
-        VALUES('rod', ${type}, ${catchRate}, ${cost});`
+        VALUES('bait', ${type}, ${catchRate}, ${cost});`
 
       console.debug(queryString)
 
-      if (db && db.authorized) {
+      if (db) {
         db.query(queryString, (err, result) => {
-          if (err) { callback(err, 'Error Code: FG-SRCLRO1'); return }
+          if (err) { callback(err, 'Error Code: FG-SRCLBA1'); return }
 
           const insertId = (<OkPacket> result).insertId
           console.log(result)
@@ -43,7 +43,7 @@ export class Bait implements StoreItem {
         db.end()
       }
     } catch {
-      callback(null, 'Error Code: FG-SRCLRO2')
+      callback(null, 'Error Code: FG-SRCLBA2')
     }
   }
 }
