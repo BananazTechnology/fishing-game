@@ -26,6 +26,7 @@ export class User {
         if (data) {
           const user: User = new User(data.id, data.discordID, data.discordName, data.walletAddress)
           callback(null, user)
+          return
         }
         callback(null, undefined)
       })
