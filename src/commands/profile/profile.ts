@@ -14,6 +14,7 @@ export const Profile: Command = {
   type: 'CHAT_INPUT',
   options: [create, view],
   run: async (client: Client, interaction: BaseCommandInteraction) => {
+    console.log(`user ${interaction.user.id} ran /profile view in ${interaction.channelId}`)
     interaction.options.data.forEach(option => {
       if (option.type === 'SUB_COMMAND') {
         subCommands.find((c) => c.name === option.name)?.run(client, interaction)

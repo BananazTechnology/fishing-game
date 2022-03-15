@@ -9,10 +9,7 @@ export const view: SubCommand = {
     type: 'SUB_COMMAND',
     options: [],
     run: async (client: Client, interaction: BaseCommandInteraction) => {
-      User.getUserByDiscordID(interaction.user.id, async (err: Error, result: any) => {
-  
-        console.log(`user ${interaction.user.id} ran /profile view in ${interaction.channelId}`)
-  
+      User.getUserByDiscordID(interaction.user.id, async (err: Error, result: any) => {  
         if (err && axios.isAxiosError(err) && err.response && err.response.data.message.includes('Cannot send an empty message')) {
           const content = `Seems like you haven't signed up for a fishing license yet!`
   

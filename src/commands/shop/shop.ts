@@ -13,7 +13,8 @@ export const Shop: Command = {
   type: 'CHAT_INPUT',
   options: [view, addRod, addBait],
   run: async (client: Client, interaction: BaseCommandInteraction) => {
-    console.log('Shop command ran')
+    console.log(`user ${interaction.user.id} ran /shop in ${interaction.channelId}`)
+
     interaction.options.data.forEach(option => {
       if (option.type === 'SUB_COMMAND') {
         subCommands.find((c) => c.name === option.name)?.run(client, interaction)

@@ -1,4 +1,4 @@
-import { BaseCommandInteraction, Client } from 'discord.js'
+import { BaseCommandInteraction, Client, Message, MessageActionRow, MessageButton, MessageEmbed } from 'discord.js'
 import { SubCommand } from '../../interfaces/subCommand'
 import { Shop as Store } from '../../classes/shop'
 
@@ -19,15 +19,21 @@ export const view: SubCommand = {
           return
         }
   
-        let content = ''
   
+      
+
+        const embed = new MessageEmbed()
+        .setColor('#0099ff')
+        .setAuthor({ name: `Fisherman Dave's Market`, iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
+
+
         shop.items.forEach(item => {
-          content += `${item.object}\t${item.type}\t${item.catchRate}\t${item.cost}\n`
+          embed.addField(`Item Type: ${item.type} ${item.object}`, `Boost: ${item.catchRate}\t | \t ${item.cost}$`, false)
         })
-  
+        
         await interaction.followUp({
           ephemeral: true,
-          content
+          embeds: [embed]
         })
       })
     }
