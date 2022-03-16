@@ -29,25 +29,50 @@ const handleSlashCommand = async (client: Client, interaction: BaseCommandIntera
   }
 
   // get user details
-  User.getUserByDiscordID(interaction.user.id, async (err: Error, user: User) => {
+  User.getUserByDiscordID(interaction.user.id, (err: Error, user: User) => {
     // if user is not found
     if (err) {
-      const content = 'Fish Police question your ID. Please contact LT Wock!'
+      const content = 'Banana Police question your ID. Please contact LT Wock!'
 
-      await interaction.followUp({
+      interaction.followUp({
         ephemeral: true,
         content
       })
     } else if (!user) {
       const content = 'Please Register for a Fishing License!'
 
-      await interaction.followUp({
+      interaction.followUp({
         ephemeral: true,
         content
       })
     } else {
-      // user found run command
-      slashCommand.run(client, interaction)
+      User.getFishGameUser(user, (err: Error, fgUser: User) => {
+        if (err && err.message.includes('No user found')) {
+          User.createFishGameUser(user, (err: Error, newFGUser: User) => {
+            if (err) {
+              console.error(err.message)
+              const content = 'Fish Police question your ID. Please contact LT Wock!'
+
+              interaction.followUp({
+                ephemeral: true,
+                content
+              })
+            } else {
+              slashCommand.run(client, interaction)
+            }
+          })
+        } else if (err) {
+          console.error(err.message)
+          const content = 'Fish Police question your ID. Something is wrong! Please contact LT Wock!'
+
+          interaction.followUp({
+            ephemeral: true,
+            content
+          })
+        } else {
+          slashCommand.run(client, interaction)
+        }
+      })
     }
   })
 }

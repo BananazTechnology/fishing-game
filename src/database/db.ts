@@ -9,13 +9,15 @@ export class FishGameDB {
   static getConnection (): mysql.Connection|undefined {
     console.log('Attempting DB Connection')
     try {
-      return mysql.createConnection({
+      const conn = mysql.createConnection({
         host: process.env.DB_HOST,
         port: port,
         user: process.env.DB_USER,
         password: process.env.DB_PWD,
         database: process.env.DB_NAME
       })
+
+      return conn
     } catch {
       console.log('Error Code: FG-SRDADB1')
     }

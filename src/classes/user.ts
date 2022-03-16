@@ -1,5 +1,7 @@
 import axios, { AxiosError } from 'axios'
 import * as dotenv from 'dotenv'
+import { RowDataPacket } from 'mysql2'
+import { FishGameDB } from '../database/db'
 
 dotenv.config()
 
@@ -8,12 +10,18 @@ export class User {
   discordID: string;
   discordName: string;
   walletAddress: string;
+  balance?: number;
+  activeRod?: number;
+  activeBait?: number;
 
-  constructor (id: number, discordID: string, discordName: string, walletAddress: string) {
+  constructor (id: number, discordID: string, discordName: string, walletAddress: string, balance?: number, activeRod?: number, activeBait?: number) {
     this.id = id
     this.discordID = discordID
     this.discordName = discordName
     this.walletAddress = walletAddress
+    this.balance = balance
+    this.activeRod = activeRod
+    this.activeBait = activeBait
   }
 
   static getUserByDiscordID = (discordID: string, callback: Function) => {
@@ -59,5 +67,64 @@ export class User {
 
         callback(err, undefined)
       })
+  }
+
+  static getFishGameUser = (user: User, callback: Function) => {
+    try {
+      const db = FishGameDB.getConnection()
+
+      const queryString = `
+        SELECT u.id, u.balance, u.activeRod, u.activeBait
+        FROM users AS u
+        WHERE u.id = '${user.id}'`
+
+      if (db) {
+        console.debug(queryString)
+        db.query(queryString, (err, result) => {
+          if (err) { callback(err, 'Error Code: FG-SRCLUS2'); return }
+
+          const row = (<RowDataPacket> result)[0]
+          if (row) {
+            const newUser: User = new User(user.id, user.discordID, user.discordName, user.walletAddress, row.balance, row.activeRod, row.activeBait)
+            callback(null, newUser)
+          } else {
+            callback(new Error('No user found'), undefined)
+          }
+        })
+
+        db.end()
+      } else {
+        callback(null, 'Error Code: FG-SRCLUS5')
+      }
+    } catch {
+      console.debug('DB Connection Issue')
+      callback(null, 'Error Code: FG-SRCLUS1')
+    }
+  }
+
+  static createFishGameUser = (user: User, callback: Function) => {
+    try {
+      const db = FishGameDB.getConnection()
+
+      const queryString = `
+        INSERT INTO users
+        (id, balance, activeRod, activeBait)
+        VALUES(${user.id}, 10, null, null);`
+
+      if (db) {
+        console.debug(queryString)
+        db.query(queryString, (err, result) => {
+          if (err) { callback(err, 'Error Code: FG-SRCLUS3'); return }
+
+          const newUser: User = new User(user.id, user.discordID, user.discordName, user.walletAddress, 10, undefined, undefined)
+          callback(null, newUser)
+        })
+
+        db.end()
+      }
+    } catch (e) {
+      console.error(e)
+      callback(new Error('Error Code: FG-SRCLUS4'), undefined)
+    }
   }
 }
