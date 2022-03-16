@@ -1,11 +1,14 @@
-import { BaseCommandInteraction, Client, Interaction } from 'discord.js'
+import { BaseCommandInteraction, Client, Interaction, MessageActionRow, MessageButton, SelectMenuInteraction } from 'discord.js'
 import { User } from '../classes/user'
 import { Commands } from '../commandList'
+import { Shop as Store } from '../classes/shop'
 
 export default (client: Client): void => {
   client.on('interactionCreate', async (interaction: Interaction) => {
     if (interaction.isCommand() || interaction.isContextMenu()) {
       await handleSlashCommand(client, interaction)
+    } else if(interaction.isSelectMenu()) {
+      await handleSelectMenu(client, interaction)
     }
   })
 }
@@ -75,4 +78,35 @@ const handleSlashCommand = async (client: Client, interaction: BaseCommandIntera
       })
     }
   })
+}
+
+const handleSelectMenu = async (client: Client, interaction: SelectMenuInteraction): Promise<void> => {
+  if (!interaction.customId) {
+    interaction.followUp({ content: 'An error has occurred' })
+    return
+  } 
+  else {
+    const item = JSON.parse(interaction.values[0]);
+    console.log(interaction.values[0]);
+    const content = `Are you sure you want to buy ${item.type} ${item.object} for ${item.cost}$?`
+
+    const row = new MessageActionRow();
+			row.addComponents(
+        new MessageButton()
+					.setCustomId('primary')
+					.setLabel('Yes')
+					.setStyle('PRIMARY'),
+			);
+      row.addComponents(
+        new MessageButton()
+					.setCustomId('secondary')
+					.setLabel('No')
+					.setStyle('SECONDARY'),
+			);
+    await interaction.reply({
+      ephemeral: true,
+      content,
+      components: [row] 
+    })
+  }
 }
