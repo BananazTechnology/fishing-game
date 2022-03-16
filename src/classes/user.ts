@@ -36,7 +36,7 @@ export class User {
           callback(null, user)
           return
         }
-        callback(null, undefined)
+        callback(new Error('No User Found'), undefined)
       })
       .catch(err => {
         console.error(err)
