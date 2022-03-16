@@ -1,4 +1,4 @@
-import { BaseCommandInteraction, Client, Message, MessageActionRow, MessageButton, MessageEmbed } from 'discord.js'
+import { BaseCommandInteraction, Client, Message, MessageActionRow, MessageButton, MessageEmbed, MessageSelectMenu } from 'discord.js'
 import { SubCommand } from '../../interfaces/subCommand'
 import { Shop as Store } from '../../classes/shop'
 
@@ -19,21 +19,30 @@ export const view: SubCommand = {
           return
         }
   
-  
-      
-
         const embed = new MessageEmbed()
         .setColor('#0099ff')
         .setAuthor({ name: `Fisherman Dave's Market`, iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
+        const select = new MessageSelectMenu();
 
 
         shop.items.forEach(item => {
+          console.log(JSON.stringify(item));
           embed.addField(`Item Type: ${item.type} ${item.object}`, `Boost: ${item.catchRate}\t | \t ${item.cost}$`, false)
+          select.addOptions([{
+            label: `Item Type: ${item.type}`,
+            description: `${item.cost}$`,
+            value: JSON.stringify(item),}]);
+          select.setCustomId(`${item.id}`);
         })
+
+      
+
+        const row = new MessageActionRow().addComponents(select);
         
         await interaction.followUp({
           ephemeral: true,
-          embeds: [embed]
+          embeds: [embed],
+          components: [row]
         })
       })
     }
