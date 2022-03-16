@@ -22,7 +22,6 @@ const handleSlashCommand = async (client: Client, interaction: BaseCommandIntera
 
   // log command to console
   console.log(`${interaction.user.username} (${interaction.user.id}) ran ${slashCommand.name}`)
-  await interaction.deferReply()
 
   // if the user is trying to create a profile, dont try to get user
   if (interaction.commandName === 'profile') {

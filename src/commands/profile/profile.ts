@@ -1,10 +1,8 @@
-import { ApplicationCommandOptionData, BaseCommandInteraction, Client } from 'discord.js'
+import { BaseCommandInteraction, Client } from 'discord.js'
 import { SubCommand } from 'src/interfaces/subCommand'
 import { Command } from '../../interfaces/command'
-import { User } from '../../classes/user'
-import axios from 'axios'
 import { view } from './profile-view'
-import { create} from './profile-create'
+import { create } from './profile-create'
 
 const subCommands: SubCommand[] = [create, view]
 

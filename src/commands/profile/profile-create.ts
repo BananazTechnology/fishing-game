@@ -16,6 +16,7 @@ export const create: SubCommand = {
   type: 'SUB_COMMAND',
   options: [wallet],
   run: async (client: Client, interaction: BaseCommandInteraction) => {
+    await interaction.deferReply({ ephemeral: true })
     let wallet
     if (interaction.options.get('wallet')?.value === undefined) {
       wallet = undefined

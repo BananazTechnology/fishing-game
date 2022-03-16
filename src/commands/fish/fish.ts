@@ -6,6 +6,7 @@ export const Fish: Command = {
   description: 'Fish Command',
   type: 'CHAT_INPUT',
   run: async (client: Client, interaction: BaseCommandInteraction) => {
+    await interaction.deferReply({ ephemeral: true })
     console.log(`user ${interaction.user.id} ran /profile view in ${interaction.channelId}`)
     const content = 'Fish Command'
 

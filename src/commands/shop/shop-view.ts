@@ -7,6 +7,7 @@ export const view: SubCommand = {
   description: 'View the Shop',
   type: 'SUB_COMMAND',
   run: async (client: Client, interaction: BaseCommandInteraction) => {
+    await interaction.deferReply({ ephemeral: true })
     console.log('Getting Shop from Database')
     Store.getShop(async (err: Error, shop: Store) => {
       if (err) {
@@ -38,7 +39,6 @@ export const view: SubCommand = {
       const row = new MessageActionRow().addComponents(select)
 
       await interaction.followUp({
-        ephemeral: true,
         embeds: [embed],
         components: [row]
       })
