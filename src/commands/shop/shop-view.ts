@@ -33,7 +33,7 @@ export const view: SubCommand = {
           description: `${item.cost}$`,
           value: JSON.stringify(item)
         }])
-        select.setCustomId(`${item.id}`)
+        select.setCustomId('shopconfirm')
       })
 
       const row = new MessageActionRow().addComponents(select)
