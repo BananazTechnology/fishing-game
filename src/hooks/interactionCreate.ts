@@ -98,7 +98,7 @@ const handleButtonClick = async (client: Client, interaction: ButtonInteraction)
   }
 
   // log command to console
-  console.log(`${interaction.user.username} (${interaction.user.id}) made a selection on ${interaction.customId}`)
+  console.log(`${interaction.user.username} (${interaction.user.id}) clicked button ${interaction.customId}`)
 
   // get user details
   getUser(interaction.user.id, (err: Error, user: User) => {

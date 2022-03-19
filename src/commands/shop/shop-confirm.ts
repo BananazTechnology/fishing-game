@@ -3,7 +3,7 @@ import { MenuSelect } from '../../interfaces/menuSelect'
 
 export const ShopConfirm: MenuSelect = {
   name: 'shopconfirm',
-  description: 'Confirm Item Buy',
+  description: 'Ask Item Buy',
   type: 'SUB_COMMAND',
   run: async (client: Client, interaction: SelectMenuInteraction) => {
     // await interaction.deferReply({ ephemeral: true })
@@ -18,13 +18,18 @@ export const ShopConfirm: MenuSelect = {
         .setCustomId('primary')
         .setLabel('Yes')
         .setStyle('PRIMARY')
+        .setCustomId('shopaccept')
     )
     row.addComponents(
       new MessageButton()
         .setCustomId('secondary')
         .setLabel('No')
         .setStyle('SECONDARY')
+        .setCustomId('shopdeny')
     )
+
+    // interaction.values.push(JSON.stringify(item))
+
     await interaction.reply({
       ephemeral: true,
       content,
