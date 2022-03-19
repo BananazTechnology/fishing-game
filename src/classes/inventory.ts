@@ -25,13 +25,13 @@ export class Inventory {
       const db = FishGameDB.getConnection()
 
       let queryString = `
-        SELECT i.id, i.userID, i.itemID, i.qty
+        SELECT i.id, i.user, i.item, i.quantity
         FROM inventory AS i
-        WHERE i.userID = '${user.id}'`
+        WHERE i.user = '${user.id}'`
 
       if (item) {
         queryString += `
-        AND i.itemID = '${item.id}'`
+        AND i.item = '${item.id}'`
       }
 
       if (db) {
@@ -58,13 +58,13 @@ export class Inventory {
     }
   }
 
-  static createInventory = (user: User, item: Bait | Rod, callback: Function) => {
+  private static createInventory = (user: User, item: Bait | Rod, callback: Function) => {
     try {
       const db = FishGameDB.getConnection()
 
       const queryString = `
         INSERT INTO inventory
-        (userID, itemID, qty)
+        (user, item, quantity)
         VALUES(${user.id}, ${item.id}, 1);`
 
       if (db) {
@@ -85,15 +85,15 @@ export class Inventory {
     }
   }
 
-  static addInventory = (user: User, item: Bait | Rod, callback: Function) => {
+  private static addInventory = (user: User, item: Bait | Rod, callback: Function) => {
     try {
       const db = FishGameDB.getConnection()
 
       const queryString = `
         UPDATE inventory i
-        SET i.qty = i.qty+1
-        WHERE i.userID = ${user.id}
-        AND i.itemID = ${item.id};`
+        SET i.quantity = i.quantity+1
+        WHERE i.user = ${user.id}
+        AND i.item = ${item.id};`
 
       if (db) {
         console.debug(queryString)
@@ -115,13 +115,13 @@ export class Inventory {
   static updateInventory (user: User, item: Bait | Rod, callback: Function) {
     Inventory.getInventory(user, item, (err: Error, inv: Inventory) => {
       if (err && err.message.includes('No inventory found')) {
-        Inventory.createInventory(user, item, (err: Error, newInv: Inventory) => {
+        Inventory.createInventory(user, item, (err: Error, inv: Inventory) => {
           callback(err, inv)
         })
       } else if (err) {
         callback(err, inv)
       } else {
-        Inventory.addInventory(user, item, (err: Error, updInv: Inventory) => {
+        Inventory.addInventory(user, item, (err: Error, inv: Inventory) => {
           callback(err, inv)
         })
       }

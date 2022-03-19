@@ -15,14 +15,12 @@ export const ShopConfirm: MenuSelect = {
     const row = new MessageActionRow()
     row.addComponents(
       new MessageButton()
-        .setCustomId('primary')
         .setLabel('Yes')
         .setStyle('PRIMARY')
-        .setCustomId('shopaccept')
+        .setCustomId(`shopaccept:${JSON.stringify(item)}`)
     )
     row.addComponents(
       new MessageButton()
-        .setCustomId('secondary')
         .setLabel('No')
         .setStyle('SECONDARY')
         .setCustomId('shopdeny')

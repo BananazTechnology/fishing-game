@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import * as dotenv from 'dotenv'
-import { RowDataPacket } from 'mysql2'
+import { OkPacket, RowDataPacket } from 'mysql2'
 import { FishGameDB } from '../database/db'
 
 dotenv.config()
@@ -125,6 +125,37 @@ export class User {
     } catch (e) {
       console.error(e)
       callback(new Error('Error Code: FG-SRCLUS4'), undefined)
+    }
+  }
+
+  static setBalance = (user: User, balance: number, callback: Function) => {
+    try {
+      if (balance < 0) {
+        callback(new Error('Not enough money'), undefined)
+        return
+      }
+
+      const db = FishGameDB.getConnection()
+
+      const queryString = `
+        UPDATE users u
+        SET u.balance = ${balance}
+        WHERE u.id = ${user.id};`
+
+      if (db) {
+        console.debug(queryString)
+        db.query(queryString, (err, result) => {
+          if (err) { callback(err, 'Error Code: FG-SRCLUS6'); return }
+
+          const rows = (<OkPacket> result).changedRows
+          callback(null, `Updated ${rows} rows`)
+        })
+
+        db.end()
+      }
+    } catch (e) {
+      console.error(e)
+      callback(new Error('Error Code: FG-SRCLUS7'), undefined)
     }
   }
 }

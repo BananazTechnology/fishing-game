@@ -51,7 +51,7 @@ const handleSlashCommand = async (client: Client, interaction: BaseCommandIntera
         content
       })
     } else {
-      slashCommand.run(client, interaction)
+      slashCommand.run(client, interaction, user)
     }
   })
 }
@@ -85,13 +85,20 @@ const handleSelectMenu = async (client: Client, interaction: SelectMenuInteracti
         content
       })
     } else {
-      menuInteraction.run(client, interaction)
+      menuInteraction.run(client, interaction, user)
     }
   })
 }
 
 const handleButtonClick = async (client: Client, interaction: ButtonInteraction): Promise<void> => {
-  const buttonInteraction = ButtonInteractions.find((c) => c.name === interaction.customId)
+  let btnID: string
+
+  if (interaction.customId.includes(':')) {
+    btnID = interaction.customId.substring(0, interaction.customId.indexOf(':'))
+  } else {
+    btnID = interaction.customId
+  }
+  const buttonInteraction = ButtonInteractions.find((c) => c.name === btnID)
   if (!buttonInteraction) {
     interaction.reply({ ephemeral: true, content: 'An error has occurred' })
     return
@@ -119,7 +126,7 @@ const handleButtonClick = async (client: Client, interaction: ButtonInteraction)
         content
       })
     } else {
-      buttonInteraction.run(client, interaction)
+      buttonInteraction.run(client, interaction, user)
     }
   })
 }
