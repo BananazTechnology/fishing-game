@@ -55,8 +55,9 @@ export class User {
         if (data) {
           const user: User = new User(data.id, data.discordID, data.discordName, data.walletAddress)
           callback(null, user)
+        } else {
+          callback(null, undefined)
         }
-        callback(null, undefined)
       })
       .catch((err: Error | AxiosError) => {
         if (axios.isAxiosError(err) && err.response) {

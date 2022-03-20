@@ -24,25 +24,25 @@ export const create: SubCommand = {
       wallet = `${interaction.options.get('wallet')?.value}`
     }
 
-    User.createUser(interaction.user.id, interaction.user.username, wallet, async (err: Error, result: any) => {
+    User.createUser(interaction.user.id, interaction.user.username, wallet, (err: Error, result: any) => {
       if (err && axios.isAxiosError(err) && err.response && err.response.data.message.includes('Duplicate entry')) {
         const content = 'You already have a permit! You\'re good to go!'
 
-        await interaction.followUp({
+        interaction.followUp({
           ephemeral: true,
           content
         })
       } else if (err) {
         const content = 'Permit Registry closed! Talk to Papa Wock!'
 
-        await interaction.followUp({
+        interaction.followUp({
           ephemeral: true,
           content
         })
       } else {
         const content = 'User Created'
 
-        await interaction.followUp({
+        interaction.followUp({
           ephemeral: true,
           content
         })

@@ -3,6 +3,7 @@ import { SubCommand } from 'src/interfaces/subCommand'
 import { Command } from '../../interfaces/command'
 import { view } from './profile-view'
 import { create } from './profile-create'
+import { User } from '../../classes/user'
 
 const subCommands: SubCommand[] = [create, view]
 
@@ -11,11 +12,11 @@ export const Profile: Command = {
   description: 'Profile Command',
   type: 'CHAT_INPUT',
   options: [create, view],
-  run: async (client: Client, interaction: BaseCommandInteraction) => {
+  run: async (client: Client, interaction: BaseCommandInteraction, user?: User) => {
     console.log(`user ${interaction.user.id} ran /profile view in ${interaction.channelId}`)
     interaction.options.data.forEach(option => {
       if (option.type === 'SUB_COMMAND') {
-        subCommands.find((c) => c.name === option.name)?.run(client, interaction)
+        subCommands.find((c) => c.name === option.name)?.run(client, interaction, user)
       }
     })
   }

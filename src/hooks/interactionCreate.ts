@@ -27,33 +27,34 @@ const handleSlashCommand = async (client: Client, interaction: BaseCommandIntera
   console.log(`${interaction.user.username} (${interaction.user.id}) ran ${slashCommand.name}`)
 
   // if the user is trying to create a profile, dont try to get user
-  if (interaction.commandName === 'profile') {
+  if (interaction.commandName === 'profile' && checkCreate(interaction)) {
     slashCommand.run(client, interaction)
-    return
+  } else {
+    // get user details
+    getUser(interaction.user.id, async (err: Error, user: User) => {
+      // if user is not found
+      if (err && err.message.includes('No User Found')) {
+        await interaction.deferReply({ ephemeral: true })
+        const content = 'Please Register for a Fishing License!'
+
+        await interaction.followUp({
+          ephemeral: true,
+          content
+        })
+      } else if (err) {
+        await interaction.deferReply({ ephemeral: true })
+        console.error(err.message)
+        const content = 'Banana Police question your ID. Please contact LT Wock!'
+
+        await interaction.followUp({
+          ephemeral: true,
+          content
+        })
+      } else {
+        slashCommand.run(client, interaction, user)
+      }
+    })
   }
-
-  // get user details
-  getUser(interaction.user.id, (err: Error, user: User) => {
-    // if user is not found
-    if (err && err.message.includes('No User Found')) {
-      const content = 'Please Register for a Fishing License!'
-
-      interaction.followUp({
-        ephemeral: true,
-        content
-      })
-    } else if (err) {
-      console.error(err.message)
-      const content = 'Banana Police question your ID. Please contact LT Wock!'
-
-      interaction.followUp({
-        ephemeral: true,
-        content
-      })
-    } else {
-      slashCommand.run(client, interaction, user)
-    }
-  })
 }
 
 const handleSelectMenu = async (client: Client, interaction: SelectMenuInteraction): Promise<void> => {
@@ -159,4 +160,16 @@ const getUser = (id: string, callback: Function) => {
       })
     }
   })
+}
+
+function checkCreate (interaction: BaseCommandInteraction): boolean {
+  let result = false
+
+  interaction.options.data.forEach(option => {
+    if (option.name === 'create') {
+      result = true
+    }
+  })
+
+  return result
 }
