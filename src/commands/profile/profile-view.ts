@@ -1,5 +1,6 @@
-import { BaseCommandInteraction, Client } from 'discord.js'
-import { SubCommand } from 'src/interfaces/subCommand'
+import { BaseCommandInteraction, Client, MessageEmbed } from 'discord.js'
+import { Inventory } from '../../classes/inventory'
+import { SubCommand } from '../../interfaces/subCommand'
 import { User } from '../../classes/user'
 
 export const view: SubCommand = {
@@ -11,15 +12,34 @@ export const view: SubCommand = {
     await interaction.deferReply({ ephemeral: true })
 
     if (user) {
-      const content =
-      `Discord Id: ${user.discordID}\nDiscord Name: ${user.discordName}\nWallet: ${user.walletAddress}
-      FG Balance: ${user.balance}
-      FG Active Rod: ${user.activeRod}
-      FG Active Bait: ${user.activeBait}`
+      Inventory.getInventory(user, undefined, async (err: Error, inv: Inventory) => {
+        if (err) {
+          const content = 'You dropped your pocket! Talk to Wock!'
 
-      await interaction.followUp({
-        ephemeral: true,
-        content
+          await interaction.followUp({
+            ephemeral: true,
+            content
+          })
+          return
+        }
+
+        const embed = new MessageEmbed()
+          .setColor('#0099ff')
+          .setTitle(`Profile: ${user.discordName}`)
+
+        embed.addField('Wallet Address:', `${user.walletAddress}`, false)
+        embed.addField('Game Balance:', `$${user.balance}`, false)
+        embed.addField('Active Rod:', `${inv.items.find((c) => c.id === user.activeRod)?.type}`, true)
+        embed.addField('Active Bait:', `${inv.items.find((c) => c.id === user.activeBait)?.type}`, true)
+        embed.addField('\u200B', '\u200B', false)
+        embed.addField('Inventory', '\u200B', false)
+        inv.items.forEach(item => {
+          embed.addField(`${item.type.toLocaleUpperCase()} ${item.object.toLocaleUpperCase()} x${item.qty}`, `Catch Rate: ${item.catchRate}`, true)
+        })
+
+        await interaction.followUp({
+          embeds: [embed]
+        })
       })
     } else {
       const content = 'Seems like you haven\'t signed up for fishing license yet!'

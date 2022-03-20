@@ -9,13 +9,15 @@ export class Bait implements StoreItem {
   type: string;
   catchRate: number;
   cost: number;
+  qty?: number;
 
-  constructor (id: number, object: string, type: string, catchRate: number, cost: number) {
+  constructor (id: number, object: string, type: string, catchRate: number, cost: number, qty?: number) {
     this.id = id
     this.object = object
     this.type = type
     this.catchRate = catchRate
     this.cost = cost
+    this.qty = qty
   }
 
   static createBait = (type: string, catchRate: number, cost: number, callback: Function) => {

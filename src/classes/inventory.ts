@@ -8,16 +8,14 @@ import { User } from './user'
 dotenv.config()
 
 export class Inventory {
-  id: number;
+  id?: number;
   userID: number;
-  itemID: number;
-  qty: number;
+  items: (Bait|Rod)[] = []
 
-  constructor (id: number, userID: number, itemID: number, qty: number) {
+  constructor (id: number|undefined, userID: number, items: (Bait|Rod)[] = []) {
     this.id = id
     this.userID = userID
-    this.itemID = itemID
-    this.qty = qty
+    this.items = items
   }
 
   static getInventory = (user: User, item: Bait | Rod | undefined, callback: Function) => {
@@ -25,13 +23,14 @@ export class Inventory {
       const db = FishGameDB.getConnection()
 
       let queryString = `
-        SELECT i.id, i.user, i.item, i.quantity
+        SELECT i.user, i.item, it.object, it.type, it.catchRate, it.cost, i.quantity
         FROM inventory AS i
-        WHERE i.user = '${user.id}'`
+        JOIN items AS it ON i.item = it.id
+        WHERE i.user = ${user.id}`
 
       if (item) {
         queryString += `
-        AND i.item = '${item.id}'`
+        AND i.item = ${item.id}`
       }
 
       if (db) {
@@ -39,9 +38,23 @@ export class Inventory {
         db.query(queryString, (err, result) => {
           if (err) { callback(err, 'Error Code: FG-SRCLIN2'); return }
 
-          const row = (<RowDataPacket> result)[0]
-          if (row) {
-            const inventory: Inventory = new Inventory(row.id, row.userID, row.itemID, row.qty)
+          const rows = <RowDataPacket[]> result
+          if (rows && rows.length > 0) {
+            const inventory: Inventory = new Inventory(undefined, user.id)
+
+            rows.forEach(row => {
+              switch (row.object) {
+                case 'rod': {
+                  inventory.items.push(new Rod(row.item, row.object, row.type, row.catchRate, row.cost, row.quantity))
+                  break
+                }
+                case 'bait': {
+                  inventory.items.push(new Bait(row.item, row.object, row.type, row.catchRate, row.quantity, row.quantity))
+                  break
+                }
+              }
+            })
+
             callback(null, inventory)
           } else {
             callback(new Error('No inventory found'), undefined)
@@ -73,8 +86,7 @@ export class Inventory {
           if (err) { callback(err, 'Error Code: FG-SRCLIN3'); return }
 
           const insertId = (<OkPacket> result).insertId
-          const newInventory: Inventory = new Inventory(insertId, user.id, item.id, 1)
-          callback(null, newInventory)
+          callback(null, insertId)
         })
 
         db.end()

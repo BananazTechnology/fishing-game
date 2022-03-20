@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios'
 import * as dotenv from 'dotenv'
 import { OkPacket, RowDataPacket } from 'mysql2'
+import { StoreItem } from 'src/interfaces/storeItem'
 import { FishGameDB } from '../database/db'
 
 dotenv.config()
@@ -141,6 +142,32 @@ export class User {
       const queryString = `
         UPDATE users u
         SET u.balance = ${balance}
+        WHERE u.id = ${user.id};`
+
+      if (db) {
+        console.debug(queryString)
+        db.query(queryString, (err, result) => {
+          if (err) { callback(err, 'Error Code: FG-SRCLUS6'); return }
+
+          const rows = (<OkPacket> result).changedRows
+          callback(null, `Updated ${rows} rows`)
+        })
+
+        db.end()
+      }
+    } catch (e) {
+      console.error(e)
+      callback(new Error('Error Code: FG-SRCLUS7'), undefined)
+    }
+  }
+
+  static setActiveItem = (user: User, item: StoreItem, callback: Function) => {
+    try {
+      const db = FishGameDB.getConnection()
+
+      const queryString = `
+        UPDATE users u
+        SET u.active${item.object} = ${item.id}
         WHERE u.id = ${user.id};`
 
       if (db) {

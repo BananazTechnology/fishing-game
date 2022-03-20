@@ -29,7 +29,7 @@ export const view: SubCommand = {
         console.log(JSON.stringify(item))
         embed.addField(`Item Type: ${item.type} ${item.object}`, `Boost: ${item.catchRate}\t | \t ${item.cost}$`, false)
         select.addOptions([{
-          label: `Item Type: ${item.type}`,
+          label: `Item Type: ${item.type} ${item.object}`,
           description: `${item.cost}$`,
           value: JSON.stringify(item)
         }])
