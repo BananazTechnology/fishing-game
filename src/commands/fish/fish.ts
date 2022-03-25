@@ -8,7 +8,7 @@ export const Fish: Command = {
   description: 'View Location Details',
   type: 'CHAT_INPUT',
   run: async (client: Client, interaction: BaseCommandInteraction, user?: User) => {
-    await interaction.deferReply({ ephemeral: true })
+    await interaction.deferReply()
 
     if (user) {
       L.getLocation(async (err: Error, loc: L) => {
@@ -23,7 +23,7 @@ export const Fish: Command = {
         }
 
         let num: number = Math.floor(Math.random() * loc.total) + 1
-        let content: string = 'You Caught: '
+        let content: string = `${interaction.user} Caught: `
 
         for (const fish of loc.fish) {
           num -= fish.quantity
@@ -40,7 +40,6 @@ export const Fish: Command = {
     } else {
       const content = 'Seems like you haven\'t signed up for fishing license yet!'
       await interaction.followUp({
-        ephemeral: true,
         content
       })
     }
