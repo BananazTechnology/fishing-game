@@ -11,7 +11,7 @@ export const Shop: Command = {
   name: 'shop',
   description: 'shop Command',
   type: 'CHAT_INPUT',
-  options: [view, addRod, addBait],
+  options: [view],
   run: async (client: Client, interaction: BaseCommandInteraction) => {
     console.log(`user ${interaction.user.id} ran /shop in ${interaction.channelId}`)
 

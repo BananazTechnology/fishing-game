@@ -1,13 +1,11 @@
 export class Fish {
-  private id: number;
-  private species: string;
-  private catchChance: number;
-  private reward: number;
+  public id: number;
+  public name: string;
+  public quantity: number;
 
-  constructor (id: number, species: string, catchChance: number, reward: number) {
+  constructor (id: number, name: string, quantity: number) {
     this.id = id
-    this.species = species
-    this.catchChance = catchChance
-    this.reward = reward
+    this.name = name
+    this.quantity = quantity
   }
 }

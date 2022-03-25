@@ -1,10 +1,11 @@
-import { BaseCommandInteraction, Client } from 'discord.js'
+import { BaseCommandInteraction, Client, MessageEmbed } from 'discord.js'
 import { Command } from '../../interfaces/command'
 import { User } from '../../classes/user'
 import { Location as L } from '../../classes/location'
+import { Fish } from 'src/classes/fish'
 
-export const Fish: Command = {
-  name: 'fish',
+export const Location: Command = {
+  name: 'location',
   description: 'View Location Details',
   type: 'CHAT_INPUT',
   run: async (client: Client, interaction: BaseCommandInteraction, user?: User) => {
@@ -22,19 +23,17 @@ export const Fish: Command = {
           return
         }
 
-        let num: number = Math.floor(Math.random() * loc.total) + 1
-        let content: string = 'You Caught: '
-
-        for (const fish of loc.fish) {
-          num -= fish.quantity
-          if (num <= 0) {
-            content += fish.name
-            break
-          }
-        }
+        const embed = new MessageEmbed()
+          .setColor('#0099ff')
+          .setTitle(`Location: ${loc.name}`)
+        embed.addField('\u200B', '\u200B', false)
+        embed.addField('Fish', '\u200B', false)
+        loc.fish.forEach((fish: Fish) => {
+          embed.addField(`${fish.name.toLocaleUpperCase()}`, `Stock: ${fish.quantity}`, true)
+        })
 
         await interaction.followUp({
-          content: content
+          embeds: [embed]
         })
       })
     } else {
