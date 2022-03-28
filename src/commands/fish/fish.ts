@@ -5,15 +5,15 @@ import { Location as L } from '../../classes/location'
 
 export const Fish: Command = {
   name: 'fish',
-  description: 'View Location Details',
+  description: 'Try to catch a fish',
   type: 'CHAT_INPUT',
   run: async (client: Client, interaction: BaseCommandInteraction, user?: User) => {
     await interaction.deferReply()
 
     if (user) {
-      L.getLocation(async (err: Error, loc: L) => {
+      L.getLocation(interaction.channelId, async (err: Error, loc: L) => {
         if (err) {
-          const content = 'EAST?! I thought you said wEAST! You\'re lost. Talk to Wock!'
+          const content = 'Yo man, somtin sketchy about this joint. Talk to Wock!'
 
           await interaction.followUp({
             ephemeral: true,

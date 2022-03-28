@@ -13,7 +13,7 @@ export class Location {
     this.name = name
   }
 
-  static getLocation = (callback: Function) => {
+  static getLocation = (channelID: string, callback: Function) => {
     try {
       const db = FishGameDB.getConnection()
 
@@ -22,7 +22,7 @@ export class Location {
         FROM locations l
         JOIN locationFishStock AS lfs ON l.id = lfs.location
         JOIN fish AS f ON lfs.fish = f.id
-        WHERE l.id = 4`
+        WHERE l.channelID = ${channelID}`
 
       if (db) {
         console.debug(queryString)
