@@ -1,7 +1,8 @@
-import { BaseCommandInteraction, Client } from 'discord.js'
+import { BaseCommandInteraction, Client, MessageEmbed } from 'discord.js'
 import { Command } from '../../interfaces/command'
 import { User } from '../../classes/user'
-import { Location as L } from '../../classes/location'
+import { Location as L, Location } from '../../classes/location'
+import { Log } from '../../classes/log'
 
 export const Fish: Command = {
   name: 'fish',
@@ -22,6 +23,8 @@ export const Fish: Command = {
           return
         }
 
+        const embed = new MessageEmbed()
+          .setColor('#0099ff')
         let num: number = Math.floor(Math.random() * loc.total) + 1
         let content: string = `${interaction.user} Caught: `
 
@@ -29,12 +32,23 @@ export const Fish: Command = {
           num -= fish.quantity
           if (num <= 0) {
             content += fish.name
+            embed.setTitle(`${fish.name} - ${fish.rarity}`)
+            embed.addField(`${fish.description}`, `Points: ${fish.points}`, false)
+
+            if (user.balance) {
+              User.setBalance(user, user.balance + fish.points, () => {})
+            }
+
+            Location.fishCaught(fish, loc, () => {})
+            Log.newLog(user, fish, loc, () => {})
+
             break
           }
         }
 
         await interaction.followUp({
-          content: content
+          content: content,
+          embeds: [embed]
         })
       })
     } else {
