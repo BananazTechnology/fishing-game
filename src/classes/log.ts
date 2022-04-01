@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv'
+import { RowDataPacket } from 'mysql2'
 import { FishGameDB } from '../database/db'
 import { Fish } from './fish'
 import { Location } from './location'
@@ -7,16 +8,18 @@ import { User } from './user'
 dotenv.config()
 
 export class Log {
-  id: number;
-  user: User;
-  fish: Fish;
-  location: Location;
+  id?: number;
+  user?: User;
+  fish?: Fish|String;
+  location?: Location;
+  count?: number;
 
-  constructor (id: number, user: User, fish: Fish, location: Location) {
+  constructor (id: number|undefined, user: User|undefined, fish: Fish|undefined, location: Location|undefined, count: number|undefined) {
     this.id = id
     this.user = user
     this.fish = fish
     this.location = location
+    this.count = count
   }
 
   static newLog = (user: User, fish: Fish, location: Location, callback: Function) => {
@@ -31,7 +34,7 @@ export class Log {
       if (db) {
         console.debug(queryString)
         db.query(queryString, (err, result) => {
-          if (err) { callback(err, 'Error Code: FG-SRCLUS3'); return }
+          if (err) { callback(err, undefined); return }
 
           const newUser: User = new User(user.id, user.discordID, user.discordName, user.walletAddress, 10, undefined, undefined)
           callback(null, newUser)
@@ -41,7 +44,50 @@ export class Log {
       }
     } catch (e) {
       console.error(e)
-      callback(new Error('Error Code: FG-SRCLUS4'), undefined)
+      callback(new Error('DB error'), undefined)
+    }
+  }
+
+  static getUserCodex = (user: User, callback: Function) => {
+    try {
+      const db = FishGameDB.getConnection()
+
+      const queryString = `
+        SELECT f.name, COUNT(cl.\`Date\`) as count 
+        FROM fish f
+        LEFT JOIN (
+          SELECT cl2.fish, cl2.\`Date\`
+          FROM catchLog cl2
+          WHERE cl2.\`user\` = ${user.id}
+        ) cl ON cl.fish = f.id
+        GROUP BY f.id`
+
+      if (db) {
+        console.debug(queryString)
+        db.query(queryString, (err, result) => {
+          if (err) { callback(err, undefined); return }
+
+          const rows = <RowDataPacket[]> result
+          if (rows && rows.length > 0) {
+            const counts: Log[] = []
+
+            rows.forEach(row => {
+              counts.push(new Log(undefined, user, row.name, undefined, row.count))
+            })
+
+            callback(null, counts)
+          } else {
+            callback(new Error('No codex found'), undefined)
+          }
+        })
+
+        db.end()
+      } else {
+        callback(new Error('No records found'), undefined)
+      }
+    } catch {
+      console.debug('DB Connection Issue')
+      callback(new Error('DB Connection Issue'), undefined)
     }
   }
 }

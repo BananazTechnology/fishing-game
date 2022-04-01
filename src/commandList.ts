@@ -5,5 +5,6 @@ import { Profile } from './commands/profile/profile'
 import { Set } from './commands/set/set'
 import { Location } from './commands/location/location'
 import { Restock } from './commands/restock/restock'
+import { Codex } from './commands/codex/codex'
 
-export const Commands: Command[] = [Shop, Fish, Profile, Set, Location, Restock]
+export const Commands: Command[] = [Shop, Fish, Profile, Set, Location, Restock, Codex]
