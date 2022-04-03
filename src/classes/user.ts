@@ -186,4 +186,37 @@ export class User {
       callback(new Error('Error Code: FG-SRCLUS7'), undefined)
     }
   }
+
+  static getCatchRate = (user: User, callback: Function) => {
+    try {
+      const db = FishGameDB.getConnection()
+
+      const queryString = `
+        SELECT SUM(i.catchRate) as rate
+        FROM users u
+        JOIN items i on ((i.id = u.activeBait) || (i.id = u.activeRod))
+        WHERE u.id = ${user.id}`
+
+      if (db) {
+        console.debug(queryString)
+        db.query(queryString, (err, result) => {
+          if (err) { callback(err, undefined); return }
+
+          const row = (<RowDataPacket> result)[0]
+          if (row) {
+            callback(null, row.rate)
+          } else {
+            callback(null, 0)
+          }
+        })
+
+        db.end()
+      } else {
+        callback(null, 'Error Code: FG-SRCLUS5')
+      }
+    } catch {
+      console.debug('DB Connection Issue')
+      callback(null, 'Error Code: FG-SRCLUS1')
+    }
+  }
 }
