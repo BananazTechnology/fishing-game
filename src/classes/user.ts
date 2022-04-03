@@ -194,7 +194,7 @@ export class User {
       const queryString = `
         SELECT SUM(i.catchRate) as rate
         FROM users u
-        JOIN items i on ((i.id = u.activeBait) || (i.id = u.activeRod))
+        JOIN items i on ((i.id = u.activeBait) OR (i.id = u.activeRod))
         WHERE u.id = ${user.id}`
 
       if (db) {
