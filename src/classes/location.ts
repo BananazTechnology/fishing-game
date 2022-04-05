@@ -18,7 +18,7 @@ export class Location {
       const db = FishGameDB.getConnection()
 
       const queryString = `
-        SELECT l.name AS location, l.id AS locationID, f.name as fish, f.id AS fishID, f.description, lfs.quantity, fr.title as rarity, fr.points
+        SELECT l.name AS location, l.id AS locationID, f.name as fish, f.id AS fishID, f.description, f.image, lfs.quantity, fr.title as rarity, fr.points
         FROM locations l
         JOIN locationFishStock AS lfs ON l.id = lfs.location
         JOIN fish AS f ON lfs.fish = f.id
@@ -36,7 +36,7 @@ export class Location {
             const location: Location = new Location(rows[0].locationID, rows[0].location)
 
             rows.forEach(row => {
-              location.fish.push(new Fish(row.fishID, row.fish, row.rarity, row.description, row.points, row.quantity))
+              location.fish.push(new Fish(row.fishID, row.fish, row.rarity, row.description, row.points, row.quantity, row.image))
               location.total += row.quantity
             })
 
