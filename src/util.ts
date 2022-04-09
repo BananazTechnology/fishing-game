@@ -41,4 +41,23 @@ export class Util {
 
     return embedArray
   }
+
+  static fourElementMultiEmbedBuilder (embedArray: MessageEmbed[], name1: string, value1: string, name2: string, value2: string, name3: string, value3: string, name4: string, value4: string, inline: boolean|undefined): MessageEmbed[] {
+    if (embedArray[embedArray.length - 1].fields.length < 25) {
+      embedArray[embedArray.length - 1].addFields(
+        {name: name1, value: value1.toUpperCase(), inline: true},
+        {name: name2, value: value2.toUpperCase(), inline: true},
+        {name: name3, value: `${Number(value3) * 100}%`, inline: true},
+        {name: name4, value: `${value4}$`, inline: true},
+        {name: '- - - - - - - - - - - - - - - - - - - - -', value: '\u200B', inline: false},
+      )
+    } else {
+      const embed = new MessageEmbed()
+        .setColor('#0099ff').setTitle(`Fisherman Dave's Market`)
+      //embed.addField(name, value, inline)
+      embedArray.push(embed)
+    }
+
+    return embedArray
+  }
 }

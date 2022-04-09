@@ -1,6 +1,7 @@
 import { BaseCommandInteraction, Client, MessageActionRow, MessageEmbed, MessageSelectMenu } from 'discord.js'
 import { SubCommand } from '../../interfaces/subCommand'
 import { Shop as Store } from '../../classes/shop'
+import { Util } from '../../util'
 
 export const view: SubCommand = {
   name: 'view',
@@ -22,12 +23,12 @@ export const view: SubCommand = {
 
       const embed = new MessageEmbed()
         .setColor('#0099ff')
-        .setAuthor({ name: 'Fisherman Dave\'s Market', iconURL: 'https://i.imgur.com/AfFp7pu.png', url: 'https://discord.js.org' })
+        .setTitle('Fisherman Dave\'s Market')
       const select = new MessageSelectMenu()
 
+      let embedArray: MessageEmbed[] = [embed]
       shop.items.forEach(item => {
-        console.log(JSON.stringify(item))
-        embed.addField(`Item Type: ${item.type} ${item.object}`, `Boost: ${item.catchRate}\t | \t ${item.cost}$`, false)
+        embedArray = Util.fourElementMultiEmbedBuilder(embedArray, 'Item', `${item.object}`, 'Type', `${item.type}`, 'Boost', `${item.catchRate}`, 'Cost', `${item.cost}`, true)
         select.addOptions([{
           label: `Item Type: ${item.type} ${item.object}`,
           description: `${item.cost}$`,
@@ -35,11 +36,21 @@ export const view: SubCommand = {
         }])
         select.setCustomId('shopconfirm')
       })
+        //console.log(JSON.stringify(item))
+      //   embed.addFields(
+      //     {name: 'Item', value: `${item.object}`, inline: true},
+      //     {name: 'Type', value: `${item.type}`, inline: true},
+      //     {name: 'Boost', value: `${item.catchRate}`, inline: true},
+      //     {name: 'Cost', value: `${item.cost}`, inline: true},
+      //   )
+      //   //embed.addField(`Item Type: ${item.type} ${item.object}`, `Boost: ${item.catchRate}\t | \t ${item.cost}$`, false)
+
+        
 
       const row = new MessageActionRow().addComponents(select)
 
       await interaction.followUp({
-        embeds: [embed],
+        embeds: embedArray,
         components: [row]
       })
     })

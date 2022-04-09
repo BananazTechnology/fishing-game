@@ -44,16 +44,18 @@ export const Fish: Command = {
             num -= fish.quantity
             if (num <= 0 || fish === loc.fish[loc.fish.length - 1]) {
               content += fish.name
-              embed.setTitle(`${fish.name} - ${fish.rarity}`)
-              embed.addField(`${fish.description}`, `You earned: $${fish.points}`, false)
-              console.log(JSON.stringify(fish))
               if (fish.image) {
-                console.log(`Image: ${fish.image}`)
-                embed.setImage(fish.image)
+                embed.setThumbnail(fish.image)
               }
+              embed.addField(`You caught a ${fish.name}!`, `${fish.description}`)
+              embed.addFields(
+                { name: 'Rarity', value: `${fish.rarity}`, inline: true},
+                { name: 'Earned $', value: `${fish.points}`, inline: true},
+                { name: 'Total $', value: `${user.balance ? user.balance + fish.points: 0}`, inline: true},
+              )
+              
               if (user.balance) {
                 User.setBalance(user, user.balance + fish.points, () => {})
-                embed.addField('Total cash in ya pocket', `$${user.balance + fish.points}`, false)
               }
 
               Location.fishCaught(fish, loc, () => {})

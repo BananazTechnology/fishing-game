@@ -29,7 +29,7 @@ export const Codex: Command = {
         //const trophy = 
         let embedArray: MessageEmbed[] = [embed]
         for (const record of log) {
-          embedArray = Util.multiEmbedBuilder(embedArray, `${record.fish}`, `Caught: ${record.count}`, true)
+          embedArray = Util.multiEmbedBuilder(embedArray, `:fish: ${record.fish}`, `:trophy: ${record.count}`, true)
         }
 
         await interaction.followUp({
