@@ -1,4 +1,4 @@
-import { BaseCommandInteraction, Client, DiscordAPIError, MessageAttachment, MessageEmbed } from 'discord.js'
+import { BaseCommandInteraction, Client, MessageEmbed } from 'discord.js'
 import { Command } from '../../interfaces/command'
 import { User } from '../../classes/user'
 import { Location as L, Location } from '../../classes/location'
@@ -24,7 +24,6 @@ export const Fish: Command = {
         }
 
         User.getCatchRate(user, async (err: Error, rate: number) => {
-          let attachment = new MessageAttachment('../../../Assets/Handheld_Lantern_NH_Inv_Icon.png', 'fish.png');
           if (err) {
             const content = 'YOUR LINE IS TANGLED! Talk to Wock!'
 
@@ -43,21 +42,18 @@ export const Fish: Command = {
 
           for (const fish of loc.fish) {
             num -= fish.quantity
-            if (num <= 0 || fish === loc.fish[loc.fish.length - 1]) {   
+            if (num <= 0 || fish === loc.fish[loc.fish.length - 1]) {
               content += fish.name
               embed.setTitle(`${fish.name} - ${fish.rarity}`)
               embed.addField(`${fish.description}`, `You earned: $${fish.points}`, false)
               console.log(JSON.stringify(fish))
-              if(fish.image) {
+              if (fish.image) {
                 console.log(`Image: ${fish.image}`)
                 embed.setImage(fish.image)
-              } else {
               }
-              embed.addField('Total cash in ya pocket', `$${user.balance ? (user.balance + fish.points) : 'error?'}`, false)
-
-
               if (user.balance) {
                 User.setBalance(user, user.balance + fish.points, () => {})
+                embed.addField('Total cash in ya pocket', `$${user.balance + fish.points}`, false)
               }
 
               Location.fishCaught(fish, loc, () => {})

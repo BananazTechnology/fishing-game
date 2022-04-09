@@ -2,7 +2,8 @@ import { BaseCommandInteraction, Client, MessageEmbed } from 'discord.js'
 import { Command } from '../../interfaces/command'
 import { User } from '../../classes/user'
 import { Location as L } from '../../classes/location'
-import { Fish } from 'src/classes/fish'
+import { Fish } from '../../classes/fish'
+import { Util } from '../../util'
 
 export const Location: Command = {
   name: 'location',
@@ -26,14 +27,14 @@ export const Location: Command = {
         const embed = new MessageEmbed()
           .setColor('#0099ff')
           .setTitle(`Location: ${loc.name}`)
-        embed.addField('\u200B', '\u200B', false)
-        embed.addField('Fish', '\u200B', false)
+        embed.addField('- - - - - - - - - - - - - - - - - - - - - - - - - - - - Fish - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', '\u200B', false)
+        let embedArray: MessageEmbed[] = [embed]
         loc.fish.forEach((fish: Fish) => {
-          embed.addField(`${fish.name.toLocaleUpperCase()}`, `Stock: ${fish.quantity}`, true)
+          embedArray = Util.multiEmbedBuilder(embedArray, `${fish.name.toLocaleUpperCase()}`, `Stock: ${fish.quantity}`, true)
         })
 
         await interaction.followUp({
-          embeds: [embed]
+          embeds: embedArray
         })
       })
     } else {

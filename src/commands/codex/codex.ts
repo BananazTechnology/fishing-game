@@ -2,6 +2,7 @@ import { BaseCommandInteraction, Client, MessageEmbed } from 'discord.js'
 import { Command } from '../../interfaces/command'
 import { User } from '../../classes/user'
 import { Log } from '../../classes/log'
+import { Util } from '../../util'
 
 export const Codex: Command = {
   name: 'codex',
@@ -23,19 +24,16 @@ export const Codex: Command = {
         }
 
         const embed = new MessageEmbed()
-          .setColor('#0099ff')
+          .setColor('#0099ff').addField('- - - - - - - - - - - - - - - - - - - - - - - - - - - Codex - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', '\u200B', false)
 
-        let content: string = ''
-        const trophy = 
+        //const trophy = 
+        let embedArray: MessageEmbed[] = [embed]
         for (const record of log) {
-          content += `${record.count}: \t ${record.fish}\n`
+          embedArray = Util.multiEmbedBuilder(embedArray, `${record.fish}`, `Caught: ${record.count}`, true)
         }
 
-        embed.setTitle('User Codex')
-        embed.setDescription(content)
-
         await interaction.followUp({
-          embeds: [embed]
+          embeds: embedArray
         })
       })
     } else {
