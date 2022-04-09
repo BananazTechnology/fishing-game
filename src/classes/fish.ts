@@ -62,7 +62,7 @@ export class Fish {
       const db = FishGameDB.getConnection()
 
       const queryString = `
-        SELECT f.id, f.name
+        SELECT f.id, f.name, f.description, f.image
         FROM fish AS f
         WHERE f.name = '${name}'`
 
@@ -73,7 +73,7 @@ export class Fish {
 
           const rows = <RowDataPacket[]> result
           if (rows && rows.length > 0) {
-            callback(null, new Fish(rows[0].id, rows[0].name, '', '', 0, 0, ''))
+            callback(null, new Fish(rows[0].id, rows[0].name, '', rows[0].description, 0, 0, rows[0].image))
           } else {
             callback(new Error('No fish found'), undefined)
           }

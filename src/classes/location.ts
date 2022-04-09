@@ -7,10 +7,12 @@ export class Location {
   public name: string;
   public fish: Fish[] = []
   public total: number = 0
+  public channelID: string
 
-  constructor (id: number, name: string) {
+  constructor (id: number, name: string, channelID: string = '') {
     this.id = id
     this.name = name
+    this.channelID = channelID
   }
 
   static getLocation = (channelID: string, callback: Function) => {
@@ -104,6 +106,41 @@ export class Location {
         })
 
         db.end()
+      }
+    } catch {
+      callback(new Error('DB Connection Error'), undefined)
+    }
+  }
+
+  static getAllLocations = (callback: Function) => {
+    try {
+      const db = FishGameDB.getConnection()
+
+      const queryString = `
+        SELECT l.channelID
+        FROM locations l`
+
+      if (db) {
+        console.debug(queryString)
+        db.query(queryString, (err, result) => {
+          if (err) { callback(err, 'DB Connection Issue'); return }
+
+          const rows = <RowDataPacket[]> result
+          if (rows && rows.length > 0) {
+            const locations: Location[] = []
+            rows.forEach(row => {
+              locations.push(new Location(0, '', row.channelID))
+            })
+
+            callback(null, locations)
+          } else {
+            callback(new Error('No location found'), undefined)
+          }
+        })
+
+        db.end()
+      } else {
+        callback(new Error('DB Connection Error'), undefined)
       }
     } catch {
       callback(new Error('DB Connection Error'), undefined)
