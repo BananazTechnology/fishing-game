@@ -26,6 +26,7 @@ export const Codex: Command = {
           .setColor('#0099ff')
 
         let content: string = ''
+        const trophy = 
         for (const record of log) {
           content += `${record.count}: \t ${record.fish}\n`
         }

@@ -53,7 +53,7 @@ export const Fish: Command = {
                 embed.setImage(fish.image)
               } else {
               }
-              embed.addField('Total cash in ya pocket', `$${user.balance}`, false)
+              embed.addField('Total cash in ya pocket', `$${user.balance ? (user.balance + fish.points) : 'error?'}`, false)
 
 
               if (user.balance) {
