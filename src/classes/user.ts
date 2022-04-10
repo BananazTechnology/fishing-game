@@ -26,7 +26,27 @@ export class User {
   }
 
   static getUserByDiscordID = (discordID: string, callback: Function) => {
-    const reqURL = `${process.env.userAPI}/user/${discordID}`
+    const reqURL = `${process.env.userAPI}/user/getByDiscord/${discordID}`
+    console.log(`Request to UserAPI: GET - ${reqURL}`)
+    axios
+      .get(reqURL)
+      .then(res => {
+        const data = res.data.data
+        if (data) {
+          const user: User = new User(data.id, data.discordID, data.discordName, data.walletAddress)
+          callback(null, user)
+          return
+        }
+        callback(new Error('No User Found'), undefined)
+      })
+      .catch(err => {
+        console.error(err)
+        callback(err, undefined)
+      })
+  }
+
+  static getUserByID = (id: number, callback: Function) => {
+    const reqURL = `${process.env.userAPI}/user/${id}`
     console.log(`Request to UserAPI: GET - ${reqURL}`)
     axios
       .get(reqURL)

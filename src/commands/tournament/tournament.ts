@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionData, BaseCommandInteraction, Client, MessageEmbed, TextChannel } from 'discord.js'
+import { ApplicationCommandOptionData, BaseCommandInteraction, Client, MessageEmbed, MessageOptions, MessagePayload, TextChannel } from 'discord.js'
 import { Command } from '../../interfaces/command'
 import { User } from '../../classes/user'
 import { Tournament as T } from '../../classes/tournament'
@@ -78,17 +78,7 @@ export const Tournament: Command = {
                 embed.setImage(fish.image)
               }
 
-              result.forEach(async location => {
-                // Get the log channel
-                const logChannel = await client.channels.fetch(location.channelID)
-
-                if (!logChannel) return
-
-                // Using a type guard to narrow down the correct type
-                if (!((logChannel): logChannel is TextChannel => logChannel.type === 'GUILD_TEXT')(logChannel)) return
-
-                logChannel.send({ embeds: [embed] })
-              })
+              sendToAll(client, result, { embeds: [embed] })
 
               await interaction.followUp({
                 ephemeral: true,
@@ -100,4 +90,18 @@ export const Tournament: Command = {
       })
     })
   }
+}
+
+async function sendToAll (client: Client, list: Location[], msg: string | MessagePayload | MessageOptions) {
+  list.forEach(async location => {
+    // Get the log channel
+    const channel = await client.channels.fetch(location.channelID)
+
+    if (!channel) return
+
+    // Using a type guard to narrow down the correct type
+    if (!((channel): channel is TextChannel => channel.type === 'GUILD_TEXT')(channel)) return
+
+    channel.send(msg)
+  })
 }

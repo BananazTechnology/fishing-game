@@ -7,5 +7,6 @@ import { Location } from './commands/location/location'
 import { Restock } from './commands/restock/restock'
 import { Codex } from './commands/codex/codex'
 import { Tournament } from './commands/tournament/tournament'
+import { Leaderboard } from './commands/leaderboard/leaderboard'
 
-export const Commands: Command[] = [Shop, Fish, Profile, Set, Location, Restock, Codex, Tournament]
+export const Commands: Command[] = [Shop, Fish, Profile, Set, Location, Restock, Codex, Tournament, Leaderboard]
