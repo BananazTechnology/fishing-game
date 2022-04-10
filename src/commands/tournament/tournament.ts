@@ -73,9 +73,11 @@ export const Tournament: Command = {
               })
             } else {
               const embed = new MessageEmbed().setColor('#0099ff')
-              embed.setTitle(`Tournament - ${fish.name} - ${len} hours`)
-              if (fish.image) {
-                embed.setImage(fish.image)
+              //embed.setTitle(`Tournament - ${fish.name} - ${len} hours`)
+              embed.setTitle(`A tournament has started!!!`)
+              embed.addField(`Tournament Type: ${fish.name}`,`End Time: <t:${Math.floor(Date.now() / 1000) + (len * 60 * 60) }:R>`, false)
+              if (fish.image && embed) {
+                embed.setThumbnail(fish.image)
               }
 
               sendToAll(client, result, { embeds: [embed] })
