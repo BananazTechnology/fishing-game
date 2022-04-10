@@ -14,8 +14,9 @@ export class User {
   balance?: number;
   activeRod?: number;
   activeBait?: number;
+  lastFish?: number;
 
-  constructor (id: number, discordID: string, discordName: string, walletAddress: string, balance?: number, activeRod?: number, activeBait?: number) {
+  constructor (id: number, discordID: string, discordName: string, walletAddress: string, balance?: number, activeRod?: number, activeBait?: number, lastFish?: number) {
     this.id = id
     this.discordID = discordID
     this.discordName = discordName
@@ -23,6 +24,7 @@ export class User {
     this.balance = balance
     this.activeRod = activeRod
     this.activeBait = activeBait
+    this.lastFish = lastFish
   }
 
   static getUserByDiscordID = (discordID: string, callback: Function) => {
@@ -33,7 +35,7 @@ export class User {
       .then(res => {
         const data = res.data.data
         if (data) {
-          const user: User = new User(data.id, data.discordID, data.discordName, data.walletAddress)
+          const user: User = new User(data.id, data.discordID, data.discordName, data.walletAddress,)
           callback(null, user)
           return
         }
@@ -76,7 +78,7 @@ export class User {
       const db = FishGameDB.getConnection()
 
       const queryString = `
-        SELECT u.id, u.balance, u.activeRod, u.activeBait
+        SELECT u.id, u.balance, u.activeRod, u.activeBait, u.lastFish
         FROM users AS u
         WHERE u.id = '${user.id}'`
 
@@ -87,7 +89,7 @@ export class User {
 
           const row = (<RowDataPacket> result)[0]
           if (row) {
-            const newUser: User = new User(user.id, user.discordID, user.discordName, user.walletAddress, row.balance, row.activeRod, row.activeBait)
+            const newUser: User = new User(user.id, user.discordID, user.discordName, user.walletAddress, row.balance, row.activeRod, row.activeBait, row.lastFish)
             callback(null, newUser)
           } else {
             callback(new Error('No user found'), undefined)
@@ -142,6 +144,31 @@ export class User {
       const queryString = `
         UPDATE users u
         SET u.balance = ${balance}
+        WHERE u.id = ${user.id};`
+
+      if (db) {
+        console.debug(queryString)
+        db.query(queryString, (err, result) => {
+          if (err) { callback(err, 'Error Code: FG-SRCLUS6'); return }
+
+          const rows = (<OkPacket> result).changedRows
+          callback(null, `Updated ${rows} rows`)
+        })
+
+        db.end()
+      }
+    } catch (e) {
+      console.error(e)
+      callback(new Error('Error Code: FG-SRCLUS7'), undefined)
+    }
+  }
+
+  static setLastFish = (user: User, lastFish: number, callback: Function) => {
+    try {
+      const db = FishGameDB.getConnection()
+      const queryString = `
+        UPDATE users u
+        SET u.lastFish = ${lastFish}
         WHERE u.id = ${user.id};`
 
       if (db) {
