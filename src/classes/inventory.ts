@@ -78,7 +78,7 @@ export class Inventory {
       const queryString = `
         INSERT INTO inventory
         (user, item, quantity)
-        VALUES(${user.id}, ${item.id}, 1);`
+        VALUES(${user.id}, ${item.id}, ${item.qty});`
 
       if (db) {
         console.debug(queryString)
@@ -100,10 +100,9 @@ export class Inventory {
   private static addInventory = (user: User, item: Bait | Rod, callback: Function) => {
     try {
       const db = FishGameDB.getConnection()
-
       const queryString = `
         UPDATE inventory i
-        SET i.quantity = i.quantity+1
+        SET i.quantity = i.quantity+ ${item.qty}
         WHERE i.user = ${user.id}
         AND i.item = ${item.id};`
 
@@ -125,6 +124,24 @@ export class Inventory {
   }
 
   static updateInventory (user: User, item: Bait | Rod, callback: Function) {
+    console.log(`ITEM ID: ${item.id}`)
+      switch(item.id){
+        case 13:
+          item.id = 5
+          break
+        case 14:
+          item.id = 6
+          break 
+        case 15:
+          item.id = 7
+          break 
+        case 16:
+          item.id = 8
+          break 
+        default:
+          break
+      }
+      console.log(`ITEM ID: ${item.id}`)
     Inventory.getInventory(user, item, (err: Error, inv: Inventory) => {
       if (err && err.message.includes('No inventory found')) {
         Inventory.createInventory(user, item, (err: Error, inv: Inventory) => {

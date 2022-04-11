@@ -3,5 +3,6 @@ export interface StoreItem {
     object: string,
     type: string,
     catchRate: number,
-    cost: number
+    cost: number,
+    qty: number,
 }

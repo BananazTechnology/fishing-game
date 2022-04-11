@@ -95,7 +95,8 @@ export class Tournament {
         WHERE cl.fish = ${tournament.fish?.id}
         AND cl.Date >= '${tournament.start?.toISOString().slice(0, 19).replace('T', ' ')}'
         AND cl.Date <= '${tournament.end?.toISOString().slice(0, 19).replace('T', ' ')}'
-        GROUP BY cl.\`user\``
+        GROUP BY cl.\`user\`
+        ORDER BY COUNT(*) DESC`
 
       if (db) {
         console.debug(queryString)

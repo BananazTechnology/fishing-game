@@ -10,7 +10,7 @@ export const ShopConfirm: MenuSelect = {
 
     const item = JSON.parse(interaction.values[0])
     console.log(interaction.values[0])
-    const content = `Are you sure you want to buy ${item.type} ${item.object} for ${item.cost}$?`
+    const content = `Are you sure you want to buy ${item.type} ${item.object} (x${item.qty}) for ${item.cost}$?`
 
     const row = new MessageActionRow()
     row.addComponents(

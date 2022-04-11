@@ -14,9 +14,9 @@ export const ShopAccept: ButtonClick = {
     const jsonObject = JSON.parse(interaction.customId.substring(index + 1))
     let item: Bait | Rod
     if (jsonObject.object === 'bait') {
-      item = new Bait(jsonObject.id, jsonObject.object, jsonObject.type, jsonObject.catchRate, jsonObject.cost)
+      item = new Bait(jsonObject.id, jsonObject.object, jsonObject.type, jsonObject.catchRate, jsonObject.cost, jsonObject.qty)
     } else {
-      item = new Rod(jsonObject.id, jsonObject.object, jsonObject.type, jsonObject.catchRate, jsonObject.cost)
+      item = new Rod(jsonObject.id, jsonObject.object, jsonObject.type, jsonObject.catchRate, jsonObject.cost, jsonObject.qty)
     }
 
     if (user && user.balance) {

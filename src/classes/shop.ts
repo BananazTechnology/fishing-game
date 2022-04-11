@@ -12,7 +12,7 @@ export class Shop {
       const db = FishGameDB.getConnection()
 
       const queryString = `
-        SELECT i.id, i.object, i.type, i.catchRate, i.cost
+        SELECT i.id, i.object, i.type, i.catchRate, i.cost, i.qty
         FROM items AS i`
 
       if (db) {
@@ -26,11 +26,11 @@ export class Shop {
             rows.forEach(row => {
               switch (row.object) {
                 case 'rod': {
-                  shop.items.push(new Rod(row.id, row.object, row.type, row.catchRate, row.cost))
+                  shop.items.push(new Rod(row.id, row.object, row.type, row.catchRate, row.cost, row.qty))
                   break
                 }
                 case 'bait': {
-                  shop.items.push(new Bait(row.id, row.object, row.type, row.catchRate, row.cost))
+                  shop.items.push(new Bait(row.id, row.object, row.type, row.catchRate, row.cost, row.qty))
                   break
                 }
               }

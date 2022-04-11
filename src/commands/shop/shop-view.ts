@@ -28,9 +28,9 @@ export const view: SubCommand = {
 
       let embedArray: MessageEmbed[] = [embed]
       shop.items.forEach(item => {
-        embedArray = Util.fourElementMultiEmbedBuilder(embedArray, 'Item', `${item.object}`, 'Type', `${item.type}`, 'Boost', `${item.catchRate}`, 'Cost', `${item.cost}`, true)
+        embedArray = Util.fourElementMultiEmbedBuilder(embedArray, 'Item', `${item.object}`, 'Type', `${item.type} (x${item.qty})`, 'Boost', `${item.catchRate}`, 'Cost', `${item.cost}`, true)
         select.addOptions([{
-          label: `Item Type: ${item.type} ${item.object}`,
+          label: `${item.type} ${item.object} (x${item.qty})`,
           description: `${item.cost}$`,
           value: JSON.stringify(item)
         }])

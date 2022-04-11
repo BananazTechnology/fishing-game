@@ -9,7 +9,7 @@ export class Rod implements StoreItem {
   type: string;
   catchRate: number;
   cost: number;
-  qty?: number;
+  qty: number;
 
   constructor (id: number, object: string, type: string, catchRate: number, cost: number, qty?: number) {
     this.id = id
@@ -17,7 +17,7 @@ export class Rod implements StoreItem {
     this.type = type
     this.catchRate = catchRate
     this.cost = cost
-    this.qty = qty
+    qty ? this.qty = qty : this.qty = 0
   }
 
   static createRod = (type: string, catchRate: number, cost: number, callback: Function) => {
