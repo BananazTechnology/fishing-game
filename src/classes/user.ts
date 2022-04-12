@@ -55,7 +55,7 @@ export class User {
       .then(res => {
         const data = res.data.data
         if (data) {
-          const user: User = new User(data.id, data.discordID, data.discordName, data.walletAddress,)
+          const user: User = new User(data.id, data.discordID, data.discordName, data.walletAddress)
           callback(null, user)
           return
         }

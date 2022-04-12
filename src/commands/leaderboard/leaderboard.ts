@@ -36,11 +36,10 @@ export const Leaderboard: Command = {
         const embed = new MessageEmbed().setColor('#0099ff')
         embed.setTitle('Leaderboard')
         let count = 1
-        let description = '';
+        let description = ''
 
         result.forEach(log => {
           if (log.user) {
-            //embed.addField(`${count} - ${log.user.discordName}`, `Count: ${log.count}`, true)
             description += `${count}.) <@${log.user.discordID}>• ${log.count}\n`
             count++
           }

@@ -2,6 +2,8 @@ import { BaseCommandInteraction, Client, MessageEmbed } from 'discord.js'
 import { Inventory } from '../../classes/inventory'
 import { SubCommand } from '../../interfaces/subCommand'
 import { User } from '../../classes/user'
+import { Bait } from 'src/classes/bait'
+import { Rod } from 'src/classes/rod'
 
 export const view: SubCommand = {
   name: 'view',
@@ -29,8 +31,8 @@ export const view: SubCommand = {
 
         embed.addField('Wallet Address:', `${user.walletAddress}`, false)
         embed.addField('Game Balance:', `$${user.balance}`, false)
-        embed.addField('Active Rod:', `${inv.items.find((c) => c.id === user.activeRod)?.type}`, true)
-        embed.addField('Active Bait:', `${inv.items.find((c) => c.id === user.activeBait)?.type}`, true)
+        embed.addField('Active Rod:', `${getType(inv.items.find((c) => c.id === user.activeRod))}`, true)
+        embed.addField('Active Bait:', `${getType(inv.items.find((c) => c.id === user.activeBait))}`, true)
         embed.addField('\u200B', '\u200B', false)
         embed.addField('Inventory', '\u200B', false)
         inv.items.forEach(item => {
@@ -48,5 +50,13 @@ export const view: SubCommand = {
         content
       })
     }
+  }
+}
+
+function getType (item: Bait | Rod | undefined): string {
+  if (item) {
+    return item.type
+  } else {
+    return 'Empty'
   }
 }
