@@ -26,17 +26,20 @@ export const view: SubCommand = {
         }
 
         const embed = new MessageEmbed()
-          .setColor('#0099ff')
-          .setTitle(`Profile: ${user.discordName}`)
+          .setColor('#FFA500')
+          .setTitle(`Fishing License: ${user.discordName} :card_index:`)
 
-        embed.addField('Wallet Address:', `${user.walletAddress}`, false)
-        embed.addField('Game Balance:', `$${user.balance}`, false)
-        embed.addField('Active Rod:', `${getType(inv.items.find((c) => c.id === user.activeRod))}`, true)
-        embed.addField('Active Bait:', `${getType(inv.items.find((c) => c.id === user.activeBait))}`, true)
-        embed.addField('\u200B', '\u200B', false)
+        embed.addField('Wallet Address:', `\`${user.walletAddress}\``, false)
+        embed.addField('Points:', `:coin: \`${user.balance}\``, true)
+        embed.addField('Equipped Rod:', `:fishing_pole_and_fish: \`${getType(inv.items.find((c) => c.id === user.activeRod))}\``, true)
+        embed.addField('Equipped Bait:', `:worm: \`${getType(inv.items.find((c) => c.id === user.activeBait))}\``, true)
         embed.addField('Inventory', '\u200B', false)
+        embed.setThumbnail(interaction.user.avatarURL())
+        //console.log(interaction.user.avatarURL);
         inv.items.forEach(item => {
-          embed.addField(`${item.type.toLocaleUpperCase()} ${item.object.toLocaleUpperCase()} x${item.qty}`, `Catch Rate: ${item.catchRate}`, true)
+          let icon = item.object == 'rod' ? ':fishing_pole_and_fish:' : ':star:'
+          icon = item.object == 'bait' ? ':worm:' : icon;
+          embed.addField(`${icon} ${item.type} ${item.object} x${item.qty}`, `:arrow_up:  \`${item.catchRate * 100}%\``, true)
         })
 
         await interaction.followUp({

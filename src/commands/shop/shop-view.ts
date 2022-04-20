@@ -22,13 +22,16 @@ export const view: SubCommand = {
       }
 
       const embed = new MessageEmbed()
-        .setColor('#0099ff')
-        .setTitle('Fisherman Dave\'s Market')
+        .setColor('#FFFF00')
+        .setTitle('Fishing Shop :flags:')
       const select = new MessageSelectMenu()
 
       let embedArray: MessageEmbed[] = [embed]
       shop.items.forEach(item => {
-        embedArray = Util.fourElementMultiEmbedBuilder(embedArray, 'Item', `${item.object}`, 'Type', `${item.type} (x${item.qty})`, 'Boost', `${item.catchRate}`, 'Cost', `${item.cost}`, true)
+        let icon = item.object == 'rod' ? ':fishing_pole_and_fish: ' : ':star: '
+        icon = item.object == 'bait' ? ':worm: ' : icon;
+        embedArray = Util.multiEmbedBuilder(embedArray, item.qty > 1 ? `${icon} **${item.type} ${item.object} (x${item.qty})**` : `:fishing_pole_and_fish: **${item.type} ${item.object}**`, `:coin: \`${item.cost}\`-:arrow_up: \`${item.catchRate * 100}%\``,true)
+          //embedArray, 'Item', `${item.object}`, 'Type', `${item.type} (x${item.qty})`, 'Boost', `${item.catchRate}`, 'Cost', `${item.cost}`, true)
         select.addOptions([{
           label: `${item.type} ${item.object} (x${item.qty})`,
           description: `${item.cost}$`,

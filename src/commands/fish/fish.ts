@@ -39,12 +39,50 @@ export const Fish: Command = {
             }
 
             const embed = new MessageEmbed()
-              .setColor('#0099ff')
             let num: number = Math.floor(Math.random() * loc.total) + 1
             let content: string = `${interaction.user} Caught: `
             num = ((rate * num) + num)
 
             for (const fish of loc.fish) {
+              // start color shit
+              let icon = ':white_circle: ';
+              switch(fish.rarity) { 
+                case 'Trash': { 
+                   embed.setColor('#FFFFFF')
+                   icon = ':white_circle: ';
+                   break; 
+                } 
+                case 'Common': { 
+                   embed.setColor('#00FF00')
+                   icon = ':green_circle: ';
+                   break; 
+                } 
+                case 'Rare': {
+                  embed.setColor('#0000FF')
+                  icon = ':blue_circle: ';
+                  break;
+                }
+                case 'Epic': {
+                  embed.setColor('#6A0DAD')
+                  icon = ':purple_circle: ';
+                  break;
+                }
+                case 'Legendary': {
+                  embed.setColor('#FFA500')
+                  icon = ':orange_circle: ';
+                  break;
+                }
+                case 'Mythical': {
+                  embed.setColor('#FF0000')
+                  icon = ':red_circle: ';
+                  break;
+                }
+                default: { 
+                   break; 
+                } 
+             } 
+
+              //end color shit
               num -= fish.quantity
               if (num <= 0 || fish === loc.fish[loc.fish.length - 1]) {
                 content += fish.name
@@ -53,9 +91,9 @@ export const Fish: Command = {
                 }
                 embed.addField(`You caught a ${fish.name}!`, `${fish.description}`)
                 embed.addFields(
-                  { name: 'Rarity', value: `${fish.rarity}`, inline: true },
-                  { name: 'Earned $', value: `${fish.points}`, inline: true },
-                  { name: 'Total $', value: `${user.balance ? user.balance + fish.points : 0}`, inline: true }
+                  { name: 'Rarity:', value: `${icon} ${fish.rarity}`, inline: true },
+                  { name: 'Points:', value: `:coin: \`${fish.points}\``, inline: true }//,
+                  //{ name: 'Total $', value: `${user.balance ? user.balance + fish.points : 0}`, inline: true }
                 )
 
                 if (user.balance) {

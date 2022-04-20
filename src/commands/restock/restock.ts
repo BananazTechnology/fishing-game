@@ -33,7 +33,7 @@ export const Restock: Command = {
         })
       })
     } else {
-      const content = 'Seems like you haven\'t signed up for fishing license yet!'
+      const content = 'Seems like you haven\'t signed up for fishing license yet or you are now allowed to use this command!'
       await interaction.followUp({
         content
       })

@@ -24,12 +24,16 @@ export const Codex: Command = {
         }
 
         const embed = new MessageEmbed()
-          .setColor('#0099ff').addField('- - - - - - - - - - - - - - - - - - - - - - - - - - - Codex - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', '\u200B', false)
+          .setTitle('Fishing Codex :blue_book:')
+          .setColor('#0000FF')
+          .setDescription(`Welcome to the Fishing Compendium. Here you'll see how many of each fish you've caught`)
+          .setColor('#0099ff')
+          //.addField('- - - - - - - - - - - - - - - - - - - - - - - - - - - Codex - - - - - - - - - - - - - - - - - - - - - - - - - - - - -', '\u200B', false)
 
         //const trophy = 
         let embedArray: MessageEmbed[] = [embed]
         for (const record of log) {
-          embedArray = Util.multiEmbedBuilder(embedArray, `:fish: ${record.fish}`, `:trophy: ${record.count}`, true)
+          embedArray = Util.multiEmbedBuilder(embedArray, `**${record.fish}**`, `:hook: \`${record.count}\``, true)
         }
 
         await interaction.followUp({
