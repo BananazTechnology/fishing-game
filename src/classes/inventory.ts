@@ -3,6 +3,7 @@ import { OkPacket, RowDataPacket } from 'mysql2'
 import { FishGameDB } from '../database/db'
 import { Bait } from './bait'
 import { Rod } from './rod'
+import { Special } from './special'
 import { User } from './user'
 
 dotenv.config()
@@ -10,7 +11,7 @@ dotenv.config()
 export class Inventory {
   id?: number;
   userID: number;
-  items: (Bait|Rod)[] = []
+  items: (Bait|Rod|Special)[] = []
 
   constructor (id: number|undefined, userID: number, items: (Bait|Rod)[] = []) {
     this.id = id
@@ -18,7 +19,7 @@ export class Inventory {
     this.items = items
   }
 
-  static getInventory = (user: User, item: Bait | Rod | undefined, callback: Function) => {
+  static getInventory = (user: User, item: number | undefined, callback: Function) => {
     try {
       const db = FishGameDB.getConnection()
 
@@ -30,7 +31,7 @@ export class Inventory {
 
       if (item) {
         queryString += `
-        AND i.item = ${item.id}`
+        AND i.item = ${item}`
       }
 
       if (db) {
@@ -52,6 +53,10 @@ export class Inventory {
                   inventory.items.push(new Bait(row.item, row.object, row.type, row.catchRate, row.quantity, row.quantity))
                   break
                 }
+                case 'special': {
+                  inventory.items.push(new Special(row.item, row.object, row.type, row.catchRate, row.quantity, row.quantity))
+                  break
+                }
               }
             })
 
@@ -71,7 +76,7 @@ export class Inventory {
     }
   }
 
-  private static createInventory = (user: User, item: Bait | Rod, callback: Function) => {
+  private static createInventory = (user: User, item: Bait | Rod | Special, callback: Function) => {
     try {
       const db = FishGameDB.getConnection()
 
@@ -97,7 +102,7 @@ export class Inventory {
     }
   }
 
-  private static addInventory = (user: User, item: Bait | Rod, callback: Function) => {
+  private static addInventory = (user: User, item: Bait | Rod | Special, callback: Function) => {
     try {
       const db = FishGameDB.getConnection()
       const queryString = `
@@ -123,7 +128,7 @@ export class Inventory {
     }
   }
 
-  static updateInventory (user: User, item: Bait | Rod, callback: Function) {
+  static updateInventory (user: User, item: Bait | Rod | Special, callback: Function) {
     console.log(`ITEM ID: ${item.id}`)
     switch (item.id) {
       case 13:
@@ -142,7 +147,7 @@ export class Inventory {
         break
     }
     console.log(`ITEM ID: ${item.id}`)
-    Inventory.getInventory(user, item, (err: Error, inv: Inventory) => {
+    Inventory.getInventory(user, item.id, (err: Error, inv: Inventory) => {
       if (err && err.message.includes('No inventory found')) {
         Inventory.createInventory(user, item, (err: Error, inv: Inventory) => {
           callback(err, inv)

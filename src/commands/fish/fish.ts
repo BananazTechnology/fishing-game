@@ -4,6 +4,7 @@ import { User } from '../../classes/user'
 import { Location as L, Location } from '../../classes/location'
 import { Log } from '../../classes/log'
 import { Bait } from '../../classes/bait'
+import { Inventory } from '../../classes/inventory'
 
 export const Fish: Command = {
   name: 'fish',
@@ -19,6 +20,16 @@ export const Fish: Command = {
         L.getLocation(interaction.channelId, async (err: Error, loc: L) => {
           if (err) {
             const content = 'Yo man, somtin sketchy about this joint. Talk to Wock!'
+
+            await interaction.followUp({
+              ephemeral: true,
+              content
+            })
+            return
+          }
+
+          if (!await canFish(user, loc)) {
+            const content = 'You dont have the right gear for this location!'
 
             await interaction.followUp({
               ephemeral: true,
@@ -45,44 +56,44 @@ export const Fish: Command = {
 
             for (const fish of loc.fish) {
               // start color shit
-              let icon = ':white_circle: ';
-              switch(fish.rarity) { 
-                case 'Trash': { 
-                   embed.setColor('#FFFFFF')
-                   icon = ':white_circle: ';
-                   break; 
-                } 
-                case 'Common': { 
-                   embed.setColor('#00FF00')
-                   icon = ':green_circle: ';
-                   break; 
-                } 
+              let icon = ':white_circle: '
+              switch (fish.rarity) {
+                case 'Trash': {
+                  embed.setColor('#FFFFFF')
+                  icon = ':white_circle: '
+                  break
+                }
+                case 'Common': {
+                  embed.setColor('#00FF00')
+                  icon = ':green_circle: '
+                  break
+                }
                 case 'Rare': {
                   embed.setColor('#0000FF')
-                  icon = ':blue_circle: ';
-                  break;
+                  icon = ':blue_circle: '
+                  break
                 }
                 case 'Epic': {
                   embed.setColor('#6A0DAD')
-                  icon = ':purple_circle: ';
-                  break;
+                  icon = ':purple_circle: '
+                  break
                 }
                 case 'Legendary': {
                   embed.setColor('#FFA500')
-                  icon = ':orange_circle: ';
-                  break;
+                  icon = ':orange_circle: '
+                  break
                 }
                 case 'Mythical': {
                   embed.setColor('#FF0000')
-                  icon = ':red_circle: ';
-                  break;
+                  icon = ':red_circle: '
+                  break
                 }
-                default: { 
-                   break; 
-                } 
-             } 
+                default: {
+                  break
+                }
+              }
 
-              //end color shit
+              // end color shit
               num -= fish.quantity
               if (num <= 0 || fish === loc.fish[loc.fish.length - 1]) {
                 content += fish.name
@@ -93,7 +104,7 @@ export const Fish: Command = {
                 embed.addFields(
                   { name: 'Rarity:', value: `${icon} ${fish.rarity}`, inline: true },
                   { name: 'Points:', value: `:coin: \`${fish.points}\``, inline: true }//,
-                  //{ name: 'Total $', value: `${user.balance ? user.balance + fish.points : 0}`, inline: true }
+                  // { name: 'Total $', value: `${user.balance ? user.balance + fish.points : 0}`, inline: true }
                 )
 
                 if (user.balance) {
@@ -110,6 +121,7 @@ export const Fish: Command = {
             }
 
             await interaction.followUp({
+              ephemeral: false,
               content: content,
               embeds: [embed]
             })
@@ -129,4 +141,20 @@ export const Fish: Command = {
       })
     }
   }
+}
+
+function canFish (user: User, location: Location): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    if (location.requirement) {
+      Inventory.getInventory(user, location.requirement, (err: Error, inv: Inventory) => {
+        if (err) {
+          resolve(false)
+        } else {
+          resolve(true)
+        }
+      })
+    } else {
+      resolve(true)
+    }
+  })
 }

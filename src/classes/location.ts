@@ -8,11 +8,13 @@ export class Location {
   public fish: Fish[] = []
   public total: number = 0
   public channelID: string
+  public requirement?: number
 
-  constructor (id: number, name: string, channelID: string = '') {
+  constructor (id: number, name: string, channelID: string = '', requirement: number|undefined) {
     this.id = id
     this.name = name
     this.channelID = channelID
+    this.requirement = requirement
   }
 
   static getLocation = (channelID: string, callback: Function) => {
@@ -20,7 +22,7 @@ export class Location {
       const db = FishGameDB.getConnection()
 
       const queryString = `
-        SELECT l.name AS location, l.id AS locationID, f.name as fish, f.id AS fishID, f.description, f.image, lfs.quantity, fr.title as rarity, fr.points
+        SELECT l.name AS location, l.id AS locationID, l.requirement, f.name as fish, f.id AS fishID, f.description, f.image, lfs.quantity, fr.title as rarity, fr.points
         FROM locations l
         JOIN locationFishStock AS lfs ON l.id = lfs.location
         JOIN fish AS f ON lfs.fish = f.id
@@ -35,7 +37,7 @@ export class Location {
 
           const rows = <RowDataPacket[]> result
           if (rows && rows.length > 0) {
-            const location: Location = new Location(rows[0].locationID, rows[0].location)
+            const location: Location = new Location(rows[0].locationID, rows[0].location, channelID, rows[0].requirement)
 
             rows.forEach(row => {
               location.fish.push(new Fish(row.fishID, row.fish, row.rarity, row.description, row.points, row.quantity, row.image))
@@ -129,7 +131,7 @@ export class Location {
           if (rows && rows.length > 0) {
             const locations: Location[] = []
             rows.forEach(row => {
-              locations.push(new Location(0, '', row.channelID))
+              locations.push(new Location(0, '', row.channelID, undefined))
             })
 
             callback(null, locations)

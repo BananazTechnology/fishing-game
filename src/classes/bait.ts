@@ -54,7 +54,7 @@ export class Bait implements StoreItem {
   static useBait = (user: User, callback: Function) => {
     try {
       if (!user.activeBait) { return }
-      Inventory.getInventory(user, new Bait(user.activeBait, '', '', 0, 0), async (err: Error, result: Inventory) => {
+      Inventory.getInventory(user, user.activeBait, async (err: Error, result: Inventory) => {
         if (err) {
           callback(err, 'Bait Jar tipped over')
         } else if (result.items[0].qty === 1) {
