@@ -90,4 +90,40 @@ export class Log {
       callback(new Error('DB Connection Issue'), undefined)
     }
   }
+
+  static getFishCount (user: User, fishID: number): Promise<number> {
+    return new Promise((resolve, reject) => {
+      try {
+        const db = FishGameDB.getConnection()
+
+        const queryString = `
+          SELECT COUNT(*) as count 
+          FROM catchLog cl
+          WHERE cl.\`user\` = ${user.id}
+          AND cl.fish = ${fishID}`
+
+        if (db) {
+          console.debug(queryString)
+          db.query(queryString, (err, result) => {
+            if (err) { resolve(0); return }
+
+            const rows = <RowDataPacket[]> result
+            const row = rows[0]
+            if (row) {
+              resolve(row.count)
+            } else {
+              resolve(0)
+            }
+          })
+
+          db.end()
+        } else {
+          resolve(0)
+        }
+      } catch {
+        console.debug('DB Connection Issue')
+        resolve(0)
+      }
+    })
+  }
 }

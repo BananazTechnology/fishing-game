@@ -2,15 +2,16 @@ import { BaseCommandInteraction, Client, MessageActionRow, MessageEmbed, Message
 import { SubCommand } from '../../interfaces/subCommand'
 import { Shop as Store } from '../../classes/shop'
 import { Util } from '../../util'
+import { User } from '../../classes/user'
 
 export const view: SubCommand = {
   name: 'view',
   description: 'View the Shop',
   type: 'SUB_COMMAND',
-  run: async (client: Client, interaction: BaseCommandInteraction) => {
+  run: async (client: Client, interaction: BaseCommandInteraction, user?: User) => {
     await interaction.deferReply({ ephemeral: true })
     console.log('Getting Shop from Database')
-    Store.getShop(async (err: Error, shop: Store) => {
+    Store.getShop(user, async (err: Error, shop: Store) => {
       if (err) {
         const content = 'Shop is closed! Talk to Wock!'
 

@@ -4,6 +4,7 @@ import { Command } from '../../interfaces/command'
 import { view } from './shop-view'
 import { addRod } from './shop-addrod'
 import { addBait } from './shop-addbait'
+import { User } from '../../classes/user'
 
 const subCommands: SubCommand[] = [view, addRod, addBait]
 
@@ -12,12 +13,12 @@ export const Shop: Command = {
   description: 'shop Command',
   type: 'CHAT_INPUT',
   options: [view],
-  run: async (client: Client, interaction: BaseCommandInteraction) => {
+  run: async (client: Client, interaction: BaseCommandInteraction, user?: User) => {
     console.log(`user ${interaction.user.id} ran /shop in ${interaction.channelId}`)
 
     interaction.options.data.forEach(option => {
       if (option.type === 'SUB_COMMAND') {
-        subCommands.find((c) => c.name === option.name)?.run(client, interaction)
+        subCommands.find((c) => c.name === option.name)?.run(client, interaction, user)
       }
     })
   }
