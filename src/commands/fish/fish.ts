@@ -5,6 +5,7 @@ import { Location as L, Location } from '../../classes/location'
 import { Log } from '../../classes/log'
 import { Bait } from '../../classes/bait'
 import { Inventory } from '../../classes/inventory'
+import { Special } from '../../classes/special'
 
 export const Fish: Command = {
   name: 'fish',
@@ -115,6 +116,10 @@ export const Fish: Command = {
                 Location.fishCaught(fish, loc, () => {})
                 Log.newLog(user, fish, loc, () => {})
                 Bait.useBait(user, () => {})
+
+                if (fish.id === 115) {
+                  Inventory.updateInventory(user, new Special(18, '', '', 0, 0, 1), () => {})
+                }
 
                 break
               }
