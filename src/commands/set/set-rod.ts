@@ -23,6 +23,16 @@ export const rod: SubCommand = {
         }
         const select = new MessageSelectMenu()
 
+        if (!inv.items) {
+          const content = 'You have no Rods! Visit the shop!'
+
+          await interaction.followUp({
+            ephemeral: true,
+            content
+          })
+          return
+        }
+
         inv.items.forEach(item => {
           if (item.object.toUpperCase() === 'ROD') {
             select.addOptions([{

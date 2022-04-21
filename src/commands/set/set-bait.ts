@@ -23,6 +23,16 @@ export const bait: SubCommand = {
         }
         const select = new MessageSelectMenu()
 
+        if (!inv.items) {
+          const content = 'You have no Bait! Visit the shop!'
+
+          await interaction.followUp({
+            ephemeral: true,
+            content
+          })
+          return
+        }
+
         inv.items.forEach(item => {
           if (item.object.toUpperCase() === 'BAIT') {
             select.addOptions([{

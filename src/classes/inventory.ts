@@ -13,7 +13,7 @@ export class Inventory {
   userID: number;
   items: (Bait|Rod|Special)[] = []
 
-  constructor (id: number|undefined, userID: number, items: (Bait|Rod)[] = []) {
+  constructor (id: number|undefined, userID: number, items: (Bait|Rod|Special)[] = []) {
     this.id = id
     this.userID = userID
     this.items = items

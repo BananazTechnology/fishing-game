@@ -29,7 +29,7 @@ const handleSlashCommand = async (client: Client, interaction: BaseCommandIntera
   // if the user is trying to create a profile, dont try to get user
   if (interaction.commandName === 'profile' && checkCreate(interaction)) {
     slashCommand.run(client, interaction)
-  } else if ((interaction.commandName === 'restock') || (interaction.commandName === 'tournament')) {
+  } else if ((interaction.commandName === 'restock') || (interaction.commandName === 'tournament') || (interaction.commandName === 'location')) {
     let hasRole = false
     const role = interaction.guild.roles.cache.find(r => r.name === 'Founders') || await interaction.guild.roles.fetch('892229838717472818')
     const members = role.members
