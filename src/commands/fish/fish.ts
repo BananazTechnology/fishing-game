@@ -101,7 +101,8 @@ export const Fish: Command = {
                 if (fish.image) {
                   embed.setThumbnail(fish.image)
                 }
-                embed.addField(`You caught a ${fish.name}!`, `${fish.description}`)
+                embed.setTitle(`You caught a ${fish.name}!`)
+                embed.setDescription(`${fish.description}`)
                 embed.addFields(
                   { name: 'Rarity:', value: `${icon} ${fish.rarity}`, inline: true },
                   { name: 'Points:', value: `:coin: \`${fish.points}\``, inline: true }//,
