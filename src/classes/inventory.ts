@@ -148,7 +148,7 @@ export class Inventory {
     }
     console.log(`ITEM ID: ${item.id}`)
     Inventory.getInventory(user, item.id, (err: Error, inv: Inventory) => {
-      if (err && err.message.includes('No inventory found')) {
+      if (!inv.items) {
         Inventory.createInventory(user, item, (err: Error, inv: Inventory) => {
           callback(err, inv)
         })
