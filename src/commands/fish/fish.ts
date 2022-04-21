@@ -60,32 +60,32 @@ export const Fish: Command = {
               let icon = ':white_circle: '
               switch (fish.rarity) {
                 case 'Trash': {
-                  embed.setColor('#FFFFFF')
+                  embed.setColor('#969696')
                   icon = ':white_circle: '
                   break
                 }
                 case 'Common': {
-                  embed.setColor('#00FF00')
+                  embed.setColor('#09c13f')
                   icon = ':green_circle: '
                   break
                 }
                 case 'Rare': {
-                  embed.setColor('#0000FF')
+                  embed.setColor('#12acff')
                   icon = ':blue_circle: '
                   break
                 }
                 case 'Epic': {
-                  embed.setColor('#6A0DAD')
+                  embed.setColor('#b837ff')
                   icon = ':purple_circle: '
                   break
                 }
                 case 'Legendary': {
-                  embed.setColor('#FFA500')
+                  embed.setColor('#ff912f')
                   icon = ':orange_circle: '
                   break
                 }
                 case 'Mythical': {
-                  embed.setColor('#FF0000')
+                  embed.setColor('#ff3d3d')
                   icon = ':red_circle: '
                   break
                 }

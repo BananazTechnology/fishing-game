@@ -23,33 +23,53 @@ const handleSlashCommand = async (client: Client, interaction: BaseCommandIntera
     return
   }
 
-
   // log command to console
   console.log(`${interaction.user.username} (${interaction.user.id}) ran ${slashCommand.name}`)
 
   // if the user is trying to create a profile, dont try to get user
   if (interaction.commandName === 'profile' && checkCreate(interaction)) {
     slashCommand.run(client, interaction)
-  } else if((interaction.commandName === 'restock') || (interaction.commandName === 'tournament')) {
-    let hasRole = false;
-    let role = interaction.guild.roles.cache.find(r => r.name === 'ADMIN') || await interaction.guild.roles.fetch('892229838717472818');
-    let members = role.members;
+  } else if ((interaction.commandName === 'restock') || (interaction.commandName === 'tournament')) {
+    let hasRole = false
+    const role = interaction.guild.roles.cache.find(r => r.name === 'ADMIN') || await interaction.guild.roles.fetch('892229838717472818')
+    const members = role.members
     members.forEach(member => {
-      if(member.id == interaction.user.id){
-        console.log('yes bitch');
-        hasRole = true;
+      if (member.id === interaction.user.id) {
+        getUser(interaction.user.id, async (err: Error, user: User) => {
+          // if user is not found
+          if (err && err.message.includes('No User Found')) {
+            await interaction.deferReply({ ephemeral: true })
+            const content = 'Please Register for a Fishing License!'
+
+            await interaction.followUp({
+              ephemeral: true,
+              content
+            })
+          } else if (err) {
+            await interaction.deferReply({ ephemeral: true })
+            console.error(err.message)
+            const content = 'Banana Police question your ID. Please contact LT Wock!'
+
+            await interaction.followUp({
+              ephemeral: true,
+              content
+            })
+          } else {
+            slashCommand.run(client, interaction, user)
+          }
+        })
+        hasRole = true
       }
-    }) 
-    if(!hasRole){
+    })
+    if (!hasRole) {
       await interaction.deferReply({ ephemeral: true })
-      const content = `You don't have permission to be doin' all that`
+      const content = 'You don\'t have permission to be doin\' all that'
       await interaction.followUp({
         ephemeral: true,
         content
       })
     }
-  }
-  else {
+  } else {
     // get user details
     getUser(interaction.user.id, async (err: Error, user: User) => {
       // if user is not found

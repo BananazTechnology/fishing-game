@@ -30,6 +30,8 @@ export class Shop {
             for (const row of rows) {
               if (row.id === 17 && await Log.getFishCount(user, 114) < 10) {
                 // do nothing
+              } else if (row.id === 12 && await Log.getFishCount(user, 113) < 1) {
+                // do nothing
               } else {
                 switch (row.object) {
                   case 'rod': {
