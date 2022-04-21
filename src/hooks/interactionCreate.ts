@@ -31,7 +31,7 @@ const handleSlashCommand = async (client: Client, interaction: BaseCommandIntera
     slashCommand.run(client, interaction)
   } else if ((interaction.commandName === 'restock') || (interaction.commandName === 'tournament')) {
     let hasRole = false
-    const role = interaction.guild.roles.cache.find(r => r.name === 'ADMIN') || await interaction.guild.roles.fetch('892229838717472818')
+    const role = interaction.guild.roles.cache.find(r => r.name === 'Founders') || await interaction.guild.roles.fetch('892229838717472818')
     const members = role.members
     members.forEach(member => {
       if (member.id === interaction.user.id) {
@@ -39,7 +39,7 @@ const handleSlashCommand = async (client: Client, interaction: BaseCommandIntera
           // if user is not found
           if (err && err.message.includes('No User Found')) {
             await interaction.deferReply({ ephemeral: true })
-            const content = 'Please Register for a Fishing License!'
+            const content = 'Please Register for a Fishing License using /profile create!'
 
             await interaction.followUp({
               ephemeral: true,
@@ -75,7 +75,7 @@ const handleSlashCommand = async (client: Client, interaction: BaseCommandIntera
       // if user is not found
       if (err && err.message.includes('No User Found')) {
         await interaction.deferReply({ ephemeral: true })
-        const content = 'Please Register for a Fishing License!'
+        const content = 'Please Register for a Fishing License using /profile create!'
 
         await interaction.followUp({
           ephemeral: true,
@@ -111,7 +111,7 @@ const handleSelectMenu = async (client: Client, interaction: SelectMenuInteracti
   getUser(interaction.user.id, (err: Error, user: User) => {
     // if user is not found
     if (err && err.message.includes('No User Found')) {
-      const content = 'Please Register for a Fishing License!'
+      const content = 'Please Register for a Fishing License using /profile create!'
 
       interaction.followUp({
         ephemeral: true,
@@ -152,7 +152,7 @@ const handleButtonClick = async (client: Client, interaction: ButtonInteraction)
   getUser(interaction.user.id, (err: Error, user: User) => {
     // if user is not found
     if (err && err.message.includes('No User Found')) {
-      const content = 'Please Register for a Fishing License!'
+      const content = 'Please Register for a Fishing License using /profile create!'
 
       interaction.followUp({
         ephemeral: true,

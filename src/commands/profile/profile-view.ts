@@ -31,8 +31,12 @@ export const view: SubCommand = {
 
         embed.addField('Wallet Address:', `\`${user.walletAddress}\``, false)
         embed.addField('Points:', `:coin: \`${user.balance}\``, true)
-        embed.addField('Equipped Rod:', `:fishing_pole_and_fish: \`${getType(inv.items.find((c) => c.id === user.activeRod))}\``, true)
-        embed.addField('Equipped Bait:', `:worm: \`${getType(inv.items.find((c) => c.id === user.activeBait))}\``, true)
+        if (inv.items){
+          embed.addField('Equipped Rod:', `:fishing_pole_and_fish: \`${getType(inv.items.find((c) => c.id === user.activeRod))}\``, true)
+        }
+        if (inv.items) {
+          embed.addField('Equipped Bait:', `:worm: \`${getType(inv.items.find((c) => c.id === user.activeBait))}\``, true)
+        }
         embed.addField('Inventory', '\u200B', false)
         embed.setThumbnail(interaction.user.avatarURL())
         // console.log(interaction.user.avatarURL);
