@@ -31,20 +31,24 @@ export const view: SubCommand = {
 
         embed.addField('Wallet Address:', `\`${user.walletAddress}\``, false)
         embed.addField('Points:', `:coin: \`${user.balance}\``, true)
-        if (inv.items){
+        if (inv.items) {
           embed.addField('Equipped Rod:', `:fishing_pole_and_fish: \`${getType(inv.items.find((c) => c.id === user.activeRod))}\``, true)
         }
         if (inv.items) {
           embed.addField('Equipped Bait:', `:worm: \`${getType(inv.items.find((c) => c.id === user.activeBait))}\``, true)
         }
-        embed.addField('Inventory', '\u200B', false)
         embed.setThumbnail(interaction.user.avatarURL())
         // console.log(interaction.user.avatarURL);
-        inv.items.forEach(item => {
-          let icon = item.object === 'rod' ? ':fishing_pole_and_fish:' : ':star:'
-          icon = item.object === 'bait' ? ':worm:' : icon
-          embed.addField(`${icon} ${item.type} ${item.object} x${item.qty}`, `:arrow_up:  \`${item.catchRate * 100}%\``, true)
-        })
+        if (inv.items) {
+          embed.addField('Inventory', '\u200B', false)
+          inv.items.forEach(item => {
+            let icon = item.object === 'rod' ? ':fishing_pole_and_fish:' : ':star:'
+            icon = item.object === 'bait' ? ':worm:' : icon
+            embed.addField(`${icon} ${item.type} ${item.object} x${item.qty}`, `:arrow_up:  \`${item.catchRate * 100}%\``, true)
+          })
+        } else {
+          embed.addField('Inventory Empty', 'Ya got no stuffs', false)
+        }
 
         await interaction.followUp({
           embeds: [embed]
