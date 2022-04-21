@@ -62,7 +62,7 @@ export class Inventory {
 
             callback(null, inventory)
           } else {
-            callback(new Error('No inventory found'), undefined)
+            callback(undefined, undefined)
           }
         })
 
