@@ -7,7 +7,7 @@ const port = process.env.DB_PORT ? +process.env.DB_PORT : undefined
 // eslint-disable-next-line no-unused-vars
 export class FishGameDB {
   static getConnection (): mysql.Connection|undefined {
-    console.log('Attempting DB Connection')
+    //console.log('Attempting DB Connection')
     try {
       const conn = mysql.createConnection({
         host: process.env.DB_HOST,

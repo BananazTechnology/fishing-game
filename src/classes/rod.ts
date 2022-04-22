@@ -31,7 +31,7 @@ export class Rod implements StoreItem {
         (object, type, catchRate, cost)
         VALUES('rod', ${type}, ${catchRate}, ${cost});`
 
-      console.debug(queryString)
+      //console.debug(queryString)
 
       if (db) {
         db.query(queryString, (err, result) => {

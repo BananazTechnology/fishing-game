@@ -30,7 +30,7 @@ export class Tournament {
         VALUES('${start.toISOString().slice(0, 19).replace('T', ' ')}', '${end.toISOString().slice(0, 19).replace('T', ' ')}', ${fish.id});`
 
       if (db) {
-        console.debug(queryString)
+        //console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, undefined); return }
 
@@ -57,7 +57,7 @@ export class Tournament {
         LIMIT 1`
 
       if (db) {
-        console.debug(queryString)
+        //console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, 'Error Code: FG-SRCLIN2'); return }
 
@@ -99,7 +99,7 @@ export class Tournament {
         ORDER BY COUNT(*) DESC`
 
       if (db) {
-        console.debug(queryString)
+        //console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, 'Error Code: FG-SRCLIN2'); return }
 

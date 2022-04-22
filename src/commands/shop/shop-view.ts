@@ -35,7 +35,7 @@ export const view: SubCommand = {
         // embedArray, 'Item', `${item.object}`, 'Type', `${item.type} (x${item.qty})`, 'Boost', `${item.catchRate}`, 'Cost', `${item.cost}`, true)
         select.addOptions([{
           label: `${item.type} ${item.object} (x${item.qty})`,
-          description: `${item.cost}$`,
+          description: `${item.cost} Points`,
           value: `${item.id}`
         }])
         select.setCustomId('shopconfirm')

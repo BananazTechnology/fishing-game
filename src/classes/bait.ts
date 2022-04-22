@@ -33,7 +33,7 @@ export class Bait implements StoreItem {
         (object, type, catchRate, cost)
         VALUES('bait', ${type}, ${catchRate}, ${cost});`
 
-      console.debug(queryString)
+      //console.debug(queryString)
 
       if (db) {
         db.query(queryString, (err, result) => {
@@ -96,7 +96,7 @@ export class Bait implements StoreItem {
           AND i.item = ${user.activeBait};`
 
           if (db) {
-            console.debug(queryString)
+            //console.debug(queryString)
             db.query(queryString, (err, result) => {
               if (err) { callback(err, 'Error Code: FG-SRCLUS6'); return }
 

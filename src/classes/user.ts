@@ -103,7 +103,7 @@ export class User {
         WHERE u.id = '${user.id}'`
 
       if (db) {
-        console.debug(queryString)
+        //console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, 'Error Code: FG-SRCLUS2'); return }
 
@@ -136,7 +136,7 @@ export class User {
         VALUES(${user.id}, 10, null, null);`
 
       if (db) {
-        console.debug(queryString)
+        //console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, 'Error Code: FG-SRCLUS3'); return }
 
@@ -167,7 +167,7 @@ export class User {
         WHERE u.id = ${user.id};`
 
       if (db) {
-        console.debug(queryString)
+        //console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, 'Error Code: FG-SRCLUS6'); return }
 
@@ -192,7 +192,7 @@ export class User {
         WHERE u.id = ${user.id};`
 
       if (db) {
-        console.debug(queryString)
+        //console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, 'Error Code: FG-SRCLUS6'); return }
 
@@ -218,7 +218,7 @@ export class User {
         WHERE u.id = ${user.id};`
 
       if (db) {
-        console.debug(queryString)
+        //console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, 'Error Code: FG-SRCLUS6'); return }
 
@@ -245,7 +245,7 @@ export class User {
         WHERE u.id = ${user.id}`
 
       if (db) {
-        console.debug(queryString)
+        //console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, undefined); return }
 
