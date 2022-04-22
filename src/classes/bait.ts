@@ -57,7 +57,7 @@ export class Bait implements StoreItem {
       Inventory.getInventory(user, user.activeBait, async (err: Error, result: Inventory) => {
         if (err) {
           callback(err, 'Bait Jar tipped over')
-        } else if (result.items[0].qty === 1) {
+        } else if (result.items && result.items[0].qty === 1) {
           const db = FishGameDB.getConnection()
 
           const queryString1 = `
