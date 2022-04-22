@@ -4,7 +4,7 @@
   "description": "Fishing Game Discord Bot",
   "main": "src/Bot.ts",
   "scripts": {
-    "start": "src/Bot.ts",
+    "start": "ts-node src/Bot.ts",
     "dev": "nodemon src/Bot.ts"
   },
   "repository": {
