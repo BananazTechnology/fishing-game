@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  discord-fishing-game-bot:
+    image: bananaztech/discord-fishing-game-bot:latest
+    container_name: discord-fishing-game-bot-prod
+    restart: always
+    environment:
+      DB_PORT: 3306
+      DB_HOST: "example.com"
+      DB_USER: "Key-API"
+      DB_PWD: "example"
+      DB_NAME: "keys"
+      DSCRD_BOT_TK: ""
+      userAPI: ""
+
+networks:
+  default:
+    external:
+      name: frontend
