@@ -1,6 +1,7 @@
 import { BaseCommandInteraction, Client, GuildMemberRoleManager, MessageEmbed } from 'discord.js'
 import { Command } from '../../interfaces/command'
 import { User } from '../../classes/user'
+import { Commands } from '../../commandList'
 
 export const Help: Command = {
   name: 'help',
@@ -9,9 +10,10 @@ export const Help: Command = {
   run: async (client: Client, interaction: BaseCommandInteraction, user?: User) => {
     //console.log(interaction.member.roles);
     await interaction.deferReply({ ephemeral: true })    
-    const content = `
-    /fish - go fishing!
-    /test - test test test`
+    let content = ''
+    Commands.forEach(command => {
+      content += `/${command.name} - ${command.description}\n`
+    })
 
     await interaction.followUp({
       content

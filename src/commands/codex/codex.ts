@@ -32,8 +32,11 @@ export const Codex: Command = {
 
         //const trophy = 
         let embedArray: MessageEmbed[] = [embed]
+        let specialItems = ['Stick', 'Waterfall Crystal'];
         for (const record of log) {
-          embedArray = Util.multiEmbedBuilder(embedArray, `**${record.fish}**`, `:hook: \`${record.count}\``, true)
+          if(!specialItems.includes(record.fish.toString())){
+            embedArray = Util.multiEmbedBuilder(embedArray, `**${record.fish}**`, `:hook: \`${record.count}\``, true)
+          }
         }
 
         await interaction.followUp({

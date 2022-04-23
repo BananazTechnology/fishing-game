@@ -1,4 +1,4 @@
-import { BaseCommandInteraction, Client, MessageEmbed } from 'discord.js'
+import { BaseCommandInteraction, Client, MessageEmbed, MessageOptions, MessagePayload, TextChannel, Util } from 'discord.js'
 import { Command } from '../../interfaces/command'
 import { User } from '../../classes/user'
 import { Location as L, Location } from '../../classes/location'
@@ -52,7 +52,7 @@ export const Fish: Command = {
 
             const embed = new MessageEmbed()
             let num: number = Math.floor(Math.random() * loc.total) + 1
-            let content: string = `${interaction.user} Caught: `
+            let content: string = `${interaction.user}`
             num = ((rate * num) + num)
 
             for (const fish of loc.fish) {
@@ -97,7 +97,7 @@ export const Fish: Command = {
               // end color shit
               num -= fish.quantity
               if (num <= 0 || fish === loc.fish[loc.fish.length - 1]) {
-                content += fish.name
+                //content += fish.name
                 if (fish.image) {
                   embed.setThumbnail(fish.image)
                 }
@@ -120,6 +120,10 @@ export const Fish: Command = {
 
                 if (fish.id === 115) {
                   Inventory.updateInventory(user, new Special(18, '', '', 0, 0, 1), () => {})
+                }
+                let specialFishIds = [113];
+                if(specialFishIds.includes(fish.id) || Number(fish.points) >= 20){
+                  sendToOne(client, '967450474318024744', `${user.discordName} caught a ${fish.name}. Here's their wallet: ${user.walletAddress}`)
                 }
 
                 break
@@ -163,4 +167,13 @@ function canFish (user: User, location: Location): Promise<boolean> {
       resolve(true)
     }
   })
+}
+
+async function sendToOne (client: Client, id: string, msg: string | MessagePayload | MessageOptions) {
+
+  if (!id) return
+  const channel = await client.channels.fetch(id)
+  // Using a type guard to narrow down the correct type
+  if (!((channel): channel is TextChannel => channel.type === 'GUILD_TEXT')(channel)) return
+  channel.send(msg)
 }

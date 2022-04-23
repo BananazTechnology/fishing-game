@@ -72,10 +72,13 @@ export const Tournament: Command = {
                 content
               })
             } else {
-              const embed = new MessageEmbed().setColor('#0099ff')
+              const embed = new MessageEmbed().setColor('#ff6290')
               //embed.setTitle(`Tournament - ${fish.name} - ${len} hours`)
-              embed.setTitle(`A tournament has started!!!`)
-              embed.addField(`Tournament Type: ${fish.name}`,`End Time: <t:${Math.floor(Date.now() / 1000) + (len * 60 * 60) }:R>`, false)
+              embed.setTitle(`:trophy: Fishing Tournament Started!`)
+              embed.setDescription(`Catch the most of the tournament fish to win! The tournament spans across all fishing channels. The duration of the tournament and the target fish can be seen below!`)
+              //embed.addField(`Tournament Type: ${fish.name}`,`End Time: <t:${Math.floor(Date.now() / 1000) + (len * 60 * 60) }:R>`, false)
+              embed.addField(`:fishing_pole_and_fish: Tournament Fish:`, `${fish.name}`, true)
+              embed.addField(`:alarm_clock: End Time:`, `<t:${Math.floor(Date.now() / 1000) + (len * 60 * 60) }:R>`, true)
               if (fish.image && embed) {
                 embed.setThumbnail(fish.image)
               }

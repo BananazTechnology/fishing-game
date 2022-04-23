@@ -32,7 +32,9 @@ const handleSlashCommand = async (client: Client, interaction: BaseCommandIntera
   } else if ((interaction.commandName === 'restock') || (interaction.commandName === 'tournament') || (interaction.commandName === 'location')) {
     let hasRole = false
     const role = interaction.guild.roles.cache.find(r => r.name === 'Founders') || await interaction.guild.roles.fetch('892930721411375105')
-    const members = role.members
+    const role2 = interaction.guild.roles.cache.find(r => r.name === 'Bot Devs') || await interaction.guild.roles.fetch('954425007889596466')
+    let members = role.members
+    members = members.concat(role2.members)
     members.forEach(member => {
       if (member.id === interaction.user.id) {
         getUser(interaction.user.id, async (err: Error, user: User) => {
