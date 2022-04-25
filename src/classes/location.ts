@@ -29,9 +29,8 @@ export class Location {
         JOIN fishRarity fr ON fr.id = f.rarity
         WHERE l.channelID = ${channelID}
         AND lfs.quantity > 0`
-
       if (db) {
-        //console.debug(queryString)
+        console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, 'DB Connection Issue'); return }
 
@@ -73,7 +72,7 @@ export class Location {
         );`
 
       if (db) {
-        //console.debug(queryString)
+        console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, 'Error Code: FG-SRCLIN6'); return }
 
@@ -99,7 +98,7 @@ export class Location {
         AND lfs.fish = ${fish.id}`
 
       if (db) {
-        //console.debug(queryString)
+        console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, 'Error Code: FG-SRCLIN6'); return }
 
@@ -123,7 +122,7 @@ export class Location {
         FROM locations l`
 
       if (db) {
-        //console.debug(queryString)
+        console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, 'DB Connection Issue'); return }
 

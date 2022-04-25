@@ -29,7 +29,7 @@ export class Fish {
         FROM fish AS f`
 
       if (db) {
-        //console.debug(queryString)
+        console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, 'Error Code: FG-SRCLIN2'); return }
 
@@ -67,7 +67,7 @@ export class Fish {
         WHERE f.name = '${name}'`
 
       if (db) {
-        //console.debug(queryString)
+        console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, 'Error Code: FG-SRCLIN2'); return }
 

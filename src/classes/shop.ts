@@ -20,7 +20,7 @@ export class Shop {
         WHERE i.cost >= 0`
 
       if (db) {
-        //console.debug(queryString)
+        console.debug(queryString)
         db.query(queryString, async (err, result) => {
           if (err) { callback(err, 'Error Code: FG-SRCLUS2'); return }
 
@@ -74,7 +74,7 @@ export class Shop {
         WHERE i.id = ${id}`
 
       if (db) {
-        //console.debug(queryString)
+        console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, 'Error Code: FG-SRCLUS2'); return }
 

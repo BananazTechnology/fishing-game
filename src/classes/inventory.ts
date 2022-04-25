@@ -35,7 +35,7 @@ export class Inventory {
       }
 
       if (db) {
-        //console.debug(queryString)
+        console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, 'Error Code: FG-SRCLIN2'); return }
 
@@ -86,7 +86,7 @@ export class Inventory {
         VALUES(${user.id}, ${item.id}, ${item.qty});`
 
       if (db) {
-        //console.debug(queryString)
+        console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, 'Error Code: FG-SRCLIN3'); return }
 
@@ -112,7 +112,7 @@ export class Inventory {
         AND i.item = ${item.id};`
 
       if (db) {
-        //console.debug(queryString)
+        console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, 'Error Code: FG-SRCLIN6'); return }
 

@@ -32,7 +32,7 @@ export class Log {
         VALUES(${user.id}, ${fish.id}, ${location.id});`
 
       if (db) {
-        //console.debug(queryString)
+        console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, undefined); return }
 
@@ -63,7 +63,7 @@ export class Log {
         GROUP BY f.id`
 
       if (db) {
-        //console.debug(queryString)
+        console.debug(queryString)
         db.query(queryString, (err, result) => {
           if (err) { callback(err, undefined); return }
 
@@ -103,7 +103,7 @@ export class Log {
           AND cl.fish = ${fishID}`
 
         if (db) {
-          //console.debug(queryString)
+          console.debug(queryString)
           db.query(queryString, (err, result) => {
             if (err) { resolve(0); return }
 

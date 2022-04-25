@@ -20,7 +20,8 @@ export const Fish: Command = {
       if (!user.lastFish || (Number(user.lastFish) + fishCooldown) < Number(Date.now())) {
         L.getLocation(interaction.channelId, async (err: Error, loc: L) => {
           if (err) {
-            const content = 'Yo man, somtin sketchy about this joint. Talk to Wock!'
+            console.log(err)
+            const content = 'Yo man, somtin sketchy about this joint. Talk to Wock! L'
 
             await interaction.followUp({
               ephemeral: true,
