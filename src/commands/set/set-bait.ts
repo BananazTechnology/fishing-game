@@ -41,8 +41,15 @@ export const bait: SubCommand = {
               value: JSON.stringify(item)
             }])
           }
-          select.setCustomId('setactive')
         })
+
+        select.addOptions([{
+          label: 'None',
+          description: 'No Catch Benefit',
+          value: JSON.stringify('None')
+        }])
+
+        select.setCustomId('setactive')
 
         if (select.options.length <= 0) {
           const content = 'You are out of bait! Visit the shop!'

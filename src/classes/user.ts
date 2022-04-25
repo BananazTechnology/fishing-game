@@ -208,14 +208,22 @@ export class User {
     }
   }
 
-  static setActiveItem = (user: User, item: StoreItem, callback: Function) => {
+  static setActiveItem = (user: User, item: StoreItem|undefined, callback: Function) => {
     try {
       const db = FishGameDB.getConnection()
+      let queryString = ''
 
-      const queryString = `
-        UPDATE users u
-        SET u.active${item.object} = ${item.id}
-        WHERE u.id = ${user.id};`
+      if (item) {
+        queryString = `
+          UPDATE users u
+          SET u.active${item.object} = ${item.id}
+          WHERE u.id = ${user.id};`
+      } else {
+        queryString = `
+          UPDATE users u
+          SET u.activeBait = NULL
+          WHERE u.id = ${user.id};`
+      }
 
       if (db) {
         console.debug(queryString)

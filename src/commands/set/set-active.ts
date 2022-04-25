@@ -8,7 +8,8 @@ export const SetActive: MenuSelect = {
   type: 'SUB_COMMAND',
   run: async (client: Client, interaction: SelectMenuInteraction, user?: User) => {
     await interaction.deferReply({ ephemeral: true })
-    const item = JSON.parse(interaction.values[0])
+    let item = JSON.parse(interaction.values[0])
+    if (item === 'None') { item = undefined }
 
     if (user) {
       User.setActiveItem(user, item, (err: Error, upd: any) => {
@@ -20,7 +21,13 @@ export const SetActive: MenuSelect = {
             content
           })
         } else {
-          const content = `Active ${item.object} set to ${item.type}!`
+          let content = ''
+
+          if (item) {
+            content = `Active ${item.object} set to ${item.type}!`
+          } else {
+            content = 'Active bait set to None!'
+          }
 
           interaction.followUp({
             ephemeral: true,
