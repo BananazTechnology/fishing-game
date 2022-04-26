@@ -2,8 +2,9 @@ import { BaseCommandInteraction, Client, MessageEmbed } from 'discord.js'
 import { Inventory } from '../../classes/inventory'
 import { SubCommand } from '../../interfaces/subCommand'
 import { User } from '../../classes/user'
-import { Bait } from 'src/classes/bait'
-import { Rod } from 'src/classes/rod'
+import { Bait } from '../../classes/bait'
+import { Rod } from '../../classes/rod'
+import { Log } from '../../classes/log'
 
 export const view: SubCommand = {
   name: 'view',
@@ -25,9 +26,11 @@ export const view: SubCommand = {
           return
         }
 
+        const rank = await Log.getUserRank(user)
+
         const embed = new MessageEmbed()
           .setColor('#FFA500')
-          .setTitle(`Fishing License: ${user.discordName} :card_index:`)
+          .setTitle(`Fishing License: ${user.discordName} :card_index: Rank: ${rank}`)
 
         embed.addField('Wallet Address:', `\`${user.walletAddress}\``, false)
         embed.addField('Points:', `:coin: \`${user.balance}\``, true)

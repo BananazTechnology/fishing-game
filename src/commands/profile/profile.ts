@@ -5,8 +5,9 @@ import { view } from './profile-view'
 import { create } from './profile-create'
 import { User } from '../../classes/user'
 import { other } from './profile-other'
+import { edit } from './profile-edit'
 
-const subCommands: SubCommand[] = [create, view, other]
+const subCommands: SubCommand[] = [create, view, other, edit]
 
 export const Profile: Command = {
   name: 'profile',

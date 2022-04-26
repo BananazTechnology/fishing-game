@@ -126,4 +126,42 @@ export class Log {
       }
     })
   }
+
+  static getUserRank (user: User): Promise<number> {
+    return new Promise((resolve, reject) => {
+      try {
+        const db = FishGameDB.getConnection()
+
+        const queryString = `
+        SELECT cl.\`user\`, COUNT(*) as count
+        FROM catchLog cl
+        GROUP BY cl.\`user\`
+        ORDER BY count DESC`
+
+        if (db) {
+          console.debug(queryString)
+          db.query(queryString, (err, result) => {
+            if (err) { resolve(0); return }
+
+            const rows = <RowDataPacket[]> result
+            let num: number = 0
+            rows.forEach(row => {
+              num++
+              if (row.user === user.id) {
+                resolve(num)
+              }
+            })
+            resolve(0)
+          })
+
+          db.end()
+        } else {
+          resolve(0)
+        }
+      } catch {
+        console.debug('DB Connection Issue')
+        resolve(0)
+      }
+    })
+  }
 }

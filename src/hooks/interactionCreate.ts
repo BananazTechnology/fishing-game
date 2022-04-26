@@ -33,6 +33,15 @@ const handleSlashCommand = async (client: Client, interaction: BaseCommandIntera
     let hasRole = false
     const role = interaction.guild.roles.cache.find(r => r.name === 'Founders') || await interaction.guild.roles.fetch('892930721411375105')
     const role2 = interaction.guild.roles.cache.find(r => r.name === 'Bot Devs') || await interaction.guild.roles.fetch('954425007889596466')
+    if (!role || !role2) {
+      await interaction.deferReply({ ephemeral: true })
+      const content = 'You don\'t have permission to be doin\' all that'
+      await interaction.followUp({
+        ephemeral: true,
+        content
+      })
+      return
+    }
     let members = role.members
     members = members.concat(role2.members)
     members.forEach(member => {

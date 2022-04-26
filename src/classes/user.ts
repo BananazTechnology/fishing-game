@@ -93,6 +93,32 @@ export class User {
       })
   }
 
+  static editUser = (id: number, discordID: string, discordName: string, walletAddress: string|undefined, callback: Function) => {
+    const reqURL = `${process.env.userAPI}/user/${id}`
+    console.log(`Request to UserAPI: PUT - ${reqURL}`)
+    console.debug(`Data: { discordID: ${discordID}, discordName: ${discordName}, walletAddress: ${walletAddress} }`)
+    axios
+      .put(reqURL, { discordID, discordName, walletAddress })
+      .then(res => {
+        const data = res.data.data
+        if (data) {
+          const user: User = new User(data.id, data.discordID, data.discordName, data.walletAddress)
+          callback(null, user)
+        } else {
+          callback(null, undefined)
+        }
+      })
+      .catch((err: Error | AxiosError) => {
+        if (axios.isAxiosError(err) && err.response) {
+          console.error(err.response.data.message)
+        } else {
+          console.error(err.message)
+        }
+
+        callback(err, undefined)
+      })
+  }
+
   static getFishGameUser = (user: User, callback: Function) => {
     try {
       const db = FishGameDB.getConnection()
