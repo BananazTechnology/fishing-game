@@ -23,7 +23,7 @@ export const bait: SubCommand = {
         }
         const select = new MessageSelectMenu()
 
-        if (!inv.items) {
+        if (inv.items.length <= 0) {
           const content = 'You have no Bait! Visit the shop!'
 
           await interaction.followUp({

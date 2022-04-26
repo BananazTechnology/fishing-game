@@ -23,7 +23,7 @@ export const rod: SubCommand = {
         }
         const select = new MessageSelectMenu()
 
-        if (!inv.items) {
+        if (inv.items.length <= 0) {
           const content = 'You have no Rods! Visit the shop!'
 
           await interaction.followUp({
