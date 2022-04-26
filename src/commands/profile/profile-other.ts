@@ -4,6 +4,7 @@ import { User } from '../../classes/user'
 import { Inventory } from '../../classes/inventory'
 import { Bait } from 'src/classes/bait'
 import { Rod } from 'src/classes/rod'
+import { Log } from '../../classes/log'
 
 const id: ApplicationCommandOptionData = {
   name: 'id',
@@ -59,10 +60,11 @@ export const other: SubCommand = {
               })
               return
             }
+            const rank = await Log.getUserRank(user)
 
             const embed = new MessageEmbed()
               .setColor('#FFA500')
-              .setTitle(`Fishing License: ${user.discordName} :card_index:`)
+              .setTitle(`Fishing License: ${user.discordName} ᲼᲼ :trophy: ${rank}`)
 
             embed.addField('Wallet Address:', `\`${user.walletAddress}\``, false)
             embed.addField('Points:', `:coin: \`${fishGameUser.balance}\``, true)
@@ -72,7 +74,9 @@ export const other: SubCommand = {
             if (inv.items) {
               embed.addField('Equipped Bait:', `:worm: \`${getType(inv.items.find((c) => c.id === fishGameUser.activeBait))}\``, true)
             }
-            embed.setThumbnail(interaction.user.avatarURL())
+
+            const imgUser = await client.users.fetch(id)
+            embed.setThumbnail(imgUser.avatarURL({dynamic: true}))
             // console.log(interaction.user.avatarURL);
             if (inv.items) {
               embed.addField('Inventory', '\u200B', false)

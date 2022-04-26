@@ -13,7 +13,7 @@ export const Profile: Command = {
   name: 'profile',
   description: 'Profile Command',
   type: 'CHAT_INPUT',
-  options: [create, view, other],
+  options: [create, view, other, edit],
   run: async (client: Client, interaction: BaseCommandInteraction, user?: User) => {
     console.log(`user ${interaction.user.id} ran /profile view in ${interaction.channelId}`)
     interaction.options.data.forEach(option => {

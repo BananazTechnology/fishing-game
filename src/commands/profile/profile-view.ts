@@ -30,7 +30,7 @@ export const view: SubCommand = {
 
         const embed = new MessageEmbed()
           .setColor('#FFA500')
-          .setTitle(`Fishing License: ${user.discordName} :card_index: Rank: ${rank}`)
+          .setTitle(`Fishing License: ${user.discordName} ᲼᲼ :trophy: ${rank}`)
 
         embed.addField('Wallet Address:', `\`${user.walletAddress}\``, false)
         embed.addField('Points:', `:coin: \`${user.balance}\``, true)
