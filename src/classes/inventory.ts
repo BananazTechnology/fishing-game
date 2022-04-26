@@ -62,7 +62,7 @@ export class Inventory {
 
             callback(null, inventory)
           } else {
-            callback(undefined, user.id)
+            callback(undefined, new Inventory(undefined, user.id))
           }
         })
 

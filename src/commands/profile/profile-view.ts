@@ -42,7 +42,7 @@ export const view: SubCommand = {
         }
         embed.setThumbnail(interaction.user.avatarURL())
         // console.log(interaction.user.avatarURL);
-        if (inv.items) {
+        if (inv.items.length > 0) {
           embed.addField('Inventory', '\u200B', false)
           inv.items.forEach(item => {
             let icon = item.object === 'rod' ? ':fishing_pole_and_fish:' : ':star:'
