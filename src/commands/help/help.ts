@@ -12,7 +12,11 @@ export const Help: Command = {
     await interaction.deferReply({ ephemeral: true })    
     let content = ''
     Commands.forEach(command => {
+      if(command.name == 'restock' || command.name == 'tournament' || command.name == 'location'){
+        content += `(Admin Only) `
+      }
       content += `/${command.name} - ${command.description}\n`
+      
     })
 
     await interaction.followUp({
