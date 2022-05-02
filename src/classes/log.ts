@@ -148,7 +148,7 @@ export class Log {
             rows.forEach(row => {
               num++
               if (row.user === user.id) {
-                resolve(num)
+                resolve(num + 1)
               }
             })
             resolve(0)

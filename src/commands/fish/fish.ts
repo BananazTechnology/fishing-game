@@ -15,7 +15,7 @@ export const Fish: Command = {
     await interaction.deferReply()
 
     if (user) {
-      let fishCooldown = 0 // in seconds
+      let fishCooldown = 300 // in seconds
       fishCooldown = fishCooldown * 1000 // convert to ms
       if (!user.lastFish || (Number(user.lastFish) + fishCooldown) < Number(Date.now())) {
         L.getLocation(interaction.channelId, async (err: Error, loc: L) => {
