@@ -10,12 +10,13 @@ export const Help: Command = {
   run: async (client: Client, interaction: BaseCommandInteraction, user?: User) => {
     //console.log(interaction.member.roles);
     await interaction.deferReply({ ephemeral: true })    
-    let content = ''
+    let content = `---------------------------------\n`
     Commands.forEach(command => {
+      let adminOnly = false;
       if(command.name == 'restock' || command.name == 'tournament' || command.name == 'location'){
-        content += `(Admin Only) `
+        adminOnly = true;
       }
-      content += `/${command.name} - ${command.description}\n`
+      content += `\`\`/${command.name}\`\` - ${command.description} ${adminOnly ? `(Admin Only)` : ``}\n\n`
       
     })
 
