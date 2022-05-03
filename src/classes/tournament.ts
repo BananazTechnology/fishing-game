@@ -93,8 +93,8 @@ export class Tournament {
         SELECT cl.\`user\`, COUNT(*) AS count
         FROM catchLog cl
         WHERE cl.fish = ${tournament.fish?.id}
-        AND cl.Date >= '${addHoursToDate(tournament.start, 5).toISOString().slice(0, 19).replace('T', ' ')}'
-        AND cl.Date <= '${addHoursToDate(tournament.end, 5).toISOString().slice(0, 19).replace('T', ' ')}'
+        AND cl.Date >= '${addHoursToDate(tournament.start, 4).toISOString().slice(0, 19).replace('T', ' ')}'
+        AND cl.Date <= '${addHoursToDate(tournament.end, 4).toISOString().slice(0, 19).replace('T', ' ')}'
         GROUP BY cl.\`user\`
         ORDER BY COUNT(*) DESC`
 
