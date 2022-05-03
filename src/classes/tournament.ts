@@ -93,8 +93,8 @@ export class Tournament {
         SELECT cl.\`user\`, COUNT(*) AS count
         FROM catchLog cl
         WHERE cl.fish = ${tournament.fish?.id}
-        AND cl.Date >= '${tournament.start?.toISOString().slice(0, 19).replace('T', ' ')}'
-        AND cl.Date <= '${tournament.end?.toISOString().slice(0, 19).replace('T', ' ')}'
+        AND cl.Date >= '${addHoursToDate(tournament.start, 5).toISOString().slice(0, 19).replace('T', ' ')}'
+        AND cl.Date <= '${addHoursToDate(tournament.end, 5).toISOString().slice(0, 19).replace('T', ' ')}'
         GROUP BY cl.\`user\`
         ORDER BY COUNT(*) DESC`
 
@@ -141,4 +141,8 @@ export class Tournament {
 function getMonthFromString (mon: string) : number {
   const num = new Date(Date.parse(mon + ' 1, 2012')).getMonth()
   return num
+}
+
+function addHoursToDate (date: Date, hours: number): Date {
+  return new Date(new Date(date).setHours(date.getHours() + hours))
 }
