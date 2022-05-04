@@ -35,7 +35,7 @@ export const Fish: Command = {
 
             await interaction.followUp({
               ephemeral: true,
-              content
+              content: content,
             })
             return
           }
@@ -110,7 +110,7 @@ export const Fish: Command = {
                   // { name: 'Total $', value: `${user.balance ? user.balance + fish.points : 0}`, inline: true }
                 )
 
-                if (user.balance) {
+                if (user.balance > -1) {
                   User.setBalance(user, user.balance + fish.points, () => {})
                 }
                 User.setLastFish(user, Date.now(), () => {})
@@ -142,13 +142,15 @@ export const Fish: Command = {
         // const content = `You can run this command again in ${Math.abs(Number(Date.now() - (Number(user.lastFish) + fishCooldown)))/ 1000} seconds`
         const content = `You can run this command again in <t:${Math.floor((Number(user.lastFish) / 1000) + (fishCooldown / 1000))}:R>`
         await interaction.followUp({
-          content
+          ephemeral: true,
+          content: content,
         })
       }
     } else {
       const content = 'Seems like you haven\'t signed up for fishing license yet!'
       await interaction.followUp({
-        content
+        ephemeral: true,
+        content: content,
       })
     }
   }

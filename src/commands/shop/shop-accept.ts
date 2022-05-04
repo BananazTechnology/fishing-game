@@ -28,7 +28,7 @@ export const ShopAccept: ButtonClick = {
         return
       }
 
-      if (user && user.balance) {
+      if (user && user.balance > -1) {
         User.setBalance(user, user.balance - item.cost, (err: Error, rows: string) => {
           if (err) {
             const content = 'You\'re likely broke! Talk to Wock!'
