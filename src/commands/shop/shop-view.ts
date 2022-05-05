@@ -24,7 +24,7 @@ export const view: SubCommand = {
 
       const embed = new MessageEmbed()
         .setColor('#FFFF00')
-        .setTitle('Fishing Shop :flags:')
+        .setTitle(`Fishing Shop :flags: :coin: ${user.balance}`)
       const select = new MessageSelectMenu()
 
       let embedArray: MessageEmbed[] = [embed]
